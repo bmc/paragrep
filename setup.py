@@ -5,7 +5,9 @@
 # $Id$
 # ---------------------------------------------------------------------------
 
-from distutils.core import setup
+import ez_setup
+ez_setup.use_setuptools(download_delay=2)
+from setuptools import setup, find_packages
 import re
 
 # Parse through the script to get various values. Can't import it, 'cause it's
@@ -16,7 +18,7 @@ reAuthor  = re.compile ("^__author__\s*=\s*\"([^,\"]+),\s*([^\"]+)\"$");
 reURL     = re.compile ("^__url__\s*=\s*\"([^\"]+)\"$")
 reLicense = re.compile ("^__license__\s*=\s*\"([^\"]+)\"$")
 
-f = open ("retain")
+f = open ("paragrep.py")
 
 VERSION = ""
 AUTHOR  = ""
@@ -53,12 +55,13 @@ f.close()
 
 # Now the setup stuff.
 
-setup (name="retain",
+setup (name="paragrep",
        version=VERSION,
-       description="delete all but the specified files/directories",
+       description="Find and print paragraphs matching regular expressions",
+       packages=find_packages(),
        url=URL,
        license=LICENSE,
        author=AUTHOR,
        author_email=EMAIL,
-       scripts=["retain"])
+       entry_points = {'console_scripts' : 'paragrep=paragrep:main'})
 
