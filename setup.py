@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Distutils setup script for rsscheck
+# EasyInstall setup script for paragrep
 #
 # $Id$
 # ---------------------------------------------------------------------------
