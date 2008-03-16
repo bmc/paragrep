@@ -11,11 +11,7 @@ from setuptools import setup, find_packages
 import re
 import sys
 import os
-
-#sys.path += [os.getcwd()]
-
 import paragrep
-print paragrep.__version__
 
 # Now the setup stuff.
 
