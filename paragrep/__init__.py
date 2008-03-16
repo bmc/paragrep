@@ -95,15 +95,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # $Id$
 
 # Info about the module
-__version__   = "3.0"
-__author__    = "Brian Clapper, bmc@clapper.org"
-__url__       = "http://www.clapper.org/software/python/paragrep/"
-__copyright__ = "© 1989-2008 Brian M. Clapper"
-__license__   = "BSD-style license"
+__version__   = '3.0'
+__author__    = 'Brian Clapper'
+__email__     = 'bmc@clapper.org'
+__url__       = 'http://www.clapper.org/software/python/paragrep/'
+__copyright__ = '© 1989-2008 Brian M. Clapper'
+__license__   = 'BSD-style license'
 
 # Package stuff
 
-__all__     = ["Paragrepper", "main"]
+__all__     = ['Paragrepper', 'main']
 
 # ---------------------------------------------------------------------------
 # Imports
@@ -134,8 +135,11 @@ class LocalOptionParser(OptionParser):
         self.print_help(sys.stderr)
         sys.exit(2)
 
-class Paragrepper:
-
+class Paragrepper(object):
+    """
+    Grep through a file, printing paragraphs that match one or more regular
+    expressions.
+    """
     def __init__(self, argv):
         self._regexps = []
         self._files = None

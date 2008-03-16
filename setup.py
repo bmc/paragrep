@@ -9,59 +9,23 @@ import ez_setup
 ez_setup.use_setuptools(download_delay=2)
 from setuptools import setup, find_packages
 import re
+import sys
+import os
 
-# Parse through the script to get various values. Can't import it, 'cause it's
-# a script without a ".py" extension.
+#sys.path += [os.getcwd()]
 
-reVersion = re.compile ("^__version__\s*=\s*\"([^\"]+)\"$")
-reAuthor  = re.compile ("^__author__\s*=\s*\"([^,\"]+),\s*([^\"]+)\"$");
-reURL     = re.compile ("^__url__\s*=\s*\"([^\"]+)\"$")
-reLicense = re.compile ("^__license__\s*=\s*\"([^\"]+)\"$")
-
-f = open ("paragrep.py")
-
-VERSION = ""
-AUTHOR  = ""
-EMAIL   = ""
-LICENSE = ""
-URL     = ""
-
-while 1:
-    line = f.readline()
-    if line == "":
-        break
-
-    m = reVersion.search (line)
-    if m != None:
-        VERSION = m.group (1)
-        continue
-
-    m = reAuthor.search (line)
-    if m != None:
-        (AUTHOR, EMAIL) = (m.group (1), m.group (2))
-        continue
-
-    m = reURL.search (line)
-    if m != None:
-        URL = m.group (1)
-        continue
-
-    m = reLicense.search (line)
-    if m != None:
-        LICENSE = m.group (1)
-        continue
-
-f.close()
+import paragrep
+print paragrep.__version__
 
 # Now the setup stuff.
 
 setup (name="paragrep",
-       version=VERSION,
+       version=paragrep.__version__,
        description="Find and print paragraphs matching regular expressions",
        packages=find_packages(),
-       url=URL,
-       license=LICENSE,
-       author=AUTHOR,
-       author_email=EMAIL,
+       url=paragrep.__url__,
+       license=paragrep.__license__,
+       author=paragrep.__author__,
+       author_email=paragrep.__email__,
        entry_points = {'console_scripts' : 'paragrep=paragrep:main'})
 
