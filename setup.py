@@ -11,6 +11,9 @@ from setuptools import setup, find_packages
 import re
 import sys
 import os
+
+here = os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.path = [os.path.join(here, 'src')] + sys.path
 import paragrep
 
 # Now the setup stuff.
@@ -18,7 +21,7 @@ import paragrep
 setup (name          = "paragrep",
        version       = paragrep.__version__,
        description   = "Find and print paragraphs matching regular expressions",
-       packages      = find_packages(where='src'),
+       packages      = find_packages(),
        url           = paragrep.__url__,
        license       = paragrep.__license__,
        author        = paragrep.__author__,
