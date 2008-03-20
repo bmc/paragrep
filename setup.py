@@ -15,13 +15,15 @@ import paragrep
 
 # Now the setup stuff.
 
-setup (name="paragrep",
-       version=paragrep.__version__,
-       description="Find and print paragraphs matching regular expressions",
-       packages=find_packages(),
-       url=paragrep.__url__,
-       license=paragrep.__license__,
-       author=paragrep.__author__,
-       author_email=paragrep.__email__,
-       entry_points = {'console_scripts' : 'paragrep=paragrep:main'})
+setup (name          = "paragrep",
+       version       = paragrep.__version__,
+       description   = "Find and print paragraphs matching regular expressions",
+       packages      = find_packages(),
+       url           = paragrep.__url__,
+       license       = paragrep.__license__,
+       author        = paragrep.__author__,
+       author_email  = paragrep.__email__,
+       entry_points  = {'console_scripts' : 'paragrep=paragrep:main'},
+       data_files    = [('man', ['docs/paragrep.1'])]
+)
 

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
+
+# Uses epydoc markup.
 '''
 paragrep - Paragraph Grep utility
 
-Usage:
-------
+Usage
+=====
 
 paragrep [-aiotv] [-p eop_regexp] [-e regexp] ... [-f exp_file] ...
          [file ] ... 
