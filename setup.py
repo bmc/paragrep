@@ -18,7 +18,7 @@ import paragrep
 setup (name          = "paragrep",
        version       = paragrep.__version__,
        description   = "Find and print paragraphs matching regular expressions",
-       packages      = find_packages(),
+       packages      = find_packages(where='src'),
        url           = paragrep.__url__,
        license       = paragrep.__license__,
        author        = paragrep.__author__,
