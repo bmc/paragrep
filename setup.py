@@ -37,5 +37,5 @@ setup (name          = 'paragrep',
        author        = info['__author__'],
        author_email  = info['__email__'],
        entry_points  = {'console_scripts' : 'paragrep=paragrep:main'},
-       data_files    = [('man', ['docs/paragrep.1'])]
+       data_files    = [('man', ['man/paragrep.1'])]
 )
