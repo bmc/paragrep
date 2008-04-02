@@ -1,0 +1,9 @@
+$Id: INSTALL 7178 2008-01-17 17:08:31Z bmc $
+
+To install "paragrep" in the default location, type:
+
+	python setup.py install
+
+To install it somewhere else (e.g., your home directory) type:
+
+	python setup.py install --prefix=$HOME
