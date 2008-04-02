@@ -101,11 +101,6 @@ paragraphs are to be matched.   More than one
 argument may be specified.  If only one expression is specified, the 
 .B \-e
 may be omitted, as in the second form of the command, above.
-See
-.Un grep 1
-or
-.Un ed 1
-for a description of regular expressions.
 .\" ------------------------------------------------------------------------
 .\"                                  -f option
 .\" ------------------------------------------------------------------------
@@ -115,7 +110,7 @@ Specifies a file containing regular expressions, one expression per line.
 Each expression in the file is added to the set of expression against which
 paragraphs are to be matched.   More than one 
 .B \-f
-argument may be specified; further, 
+argument is permitted. Also,
 .B \-f
 and
 .B \-e
@@ -165,20 +160,6 @@ represents the horizontal tab character.  If you need to specify a
 horizontal tab, you'll need to type the actual character;
 .B paragrep
 doesn't recognize C-style metacharacters.)
-.\" ------------------------------------------------------------------------
-.\"                                  -t option
-.\" ------------------------------------------------------------------------
-.TP 15
-.BI \-t
-Specify that \fItroff\fP(1) or \fInroff\fP(1) directives delimit
-paragraphs.
-.B paragrep
-defines a
-.I troff
-directive as a line beginning with a `.' character; thus, this option is
-just shorthand for 
-.B \-p
-\&'^\\.'.
 .\" ------------------------------------------------------------------------
 .\"                                  -v option
 .\" ------------------------------------------------------------------------
