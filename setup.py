@@ -28,14 +28,15 @@ info = loadInfo()
 
 # Now the setup stuff.
 
-setup (name          = 'paragrep',
-       version       = info['__version__'],
-       description   = "Find and print paragraphs matching regular expressions",
-       packages      = find_packages(),
-       url           = info['__url__'],
-       license       = info['__license__'],
-       author        = info['__author__'],
-       author_email  = info['__email__'],
-       entry_points  = {'console_scripts' : 'paragrep=paragrep:main'},
-       data_files    = [('man', ['man/paragrep.1'])]
+setup (name             = 'paragrep',
+       version          = info['__version__'],
+       description      = "Print paragraphs matching regular expressions",
+       packages         = find_packages(),
+       url              = info['__url__'],
+       license          = info['__license__'],
+       author           = info['__author__'],
+       author_email     = info['__email__'],
+       entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
+       install_requires = ['grizzled>=0.1'],
+       data_files       = [('man', ['man/paragrep.1'])]
 )
