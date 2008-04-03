@@ -39,4 +39,11 @@ setup (name             = 'paragrep',
        entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
        install_requires = ['grizzled>=0.1'],
        data_files       = [('man', ['man/paragrep.1'])]
+       classifiers = [
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+        'Topic :: Text Processing :: Filters'
+        ]
 )
