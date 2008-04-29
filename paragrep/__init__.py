@@ -193,7 +193,7 @@ __all__     = ['Paragrepper', 'main']
 # Imports
 # ---------------------------------------------------------------------------
 
-from grizzled.optparser import CommandLineParser
+from grizzled.cmdline import CommandLineParser
 import string
 import sys
 import os
@@ -333,25 +333,25 @@ def __parseParams(paragrepper, argv):
 	parser = CommandLineParser(usage=USAGE)
 	parser.addOption('-a', '--and', action='store_true', dest='anding',
 			 help='Logically AND all regular expressions.')
-	parser.addOption('-o', '--or', action='store_false', dest='anding',
-			 help='Logically OR all regular expressions.')
-	parser.addOption('-i', '--caseblind', action='store_true',
-			 dest='caseblind',
-			 help='Match without regard to case.')
-	parser.addOption('-v', '--negate', action='store_true', dest='negate',
-			 help='Negate the sense of the match.')
 	parser.addOption('-e', '--regexp', '--expr', action='append',
 			 dest='regexps',
 			 help='Specify a regular expression to find.' \
 			 'This option may be specified multiple times.')
-	parser.addOption('-p', '--eop', action='store', type='string',
-			 dest='eop_regexp', default=r'^\s*$',
-			 help=r'Specify an alternate regular expression ' \
-			 'to match end-of-paragraph. Default: %default')
 	parser.addOption('-f', '--file', action='append', type='string',
 			 dest='exprFiles',
 			 help='Specify a file full of regular expressions, ' \
 			 'one per line.')
+	parser.addOption('-i', '--caseblind', action='store_true',
+			 dest='caseblind',
+			 help='Match without regard to case.')
+	parser.addOption('-o', '--or', action='store_false', dest='anding',
+			 help='Logically OR all regular expressions.')
+	parser.addOption('-p', '--eop', action='store', type='string',
+			 dest='eop_regexp', default=r'^\s*$',
+			 help=r'Specify an alternate regular expression ' \
+			 'to match end-of-paragraph. Default: %default')
+	parser.addOption('-v', '--negate', action='store_true', dest='negate',
+			 help='Negate the sense of the match.')
 
 	(options, args) = parser.parseArgs(argv)
 
