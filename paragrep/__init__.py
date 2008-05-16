@@ -7,7 +7,7 @@ paragrep - Paragraph Grep utility
 Usage
 =====
 
-B{paragrep} [-aiotv] [-p I{eop_regexp}] [-e I{regexp}] ... [-f I{exp_file}] ... [I{file} ] ... 
+B{paragrep} [-aiotv] [-p I{eop_regexp}] [-e I{regexp}] ... [-f I{exp_file}] ... [I{file} ] ...
 
 B{paragrep} [-itv] [-p I{eop_regexp}] I{regexp} [I{file}] ...
 
@@ -119,7 +119,7 @@ Displays all lines that do not match specified expressions.  The negation
 logic works on DeMorgan's Laws.  Normally, if C{-a} is specified,
 B{paragrep} uses the following logic to match the paragraph::
 
-    match = contains(expr1) AND contains(expr2) ... 
+    match = contains(expr1) AND contains(expr2) ...
 
 Specifying C{-v} along with C{-a} changes this logic to::
 
@@ -128,11 +128,11 @@ Specifying C{-v} along with C{-a} changes this logic to::
 Likewise, without C{-a} or C{-v} (i.e., using C{-o}, which is the default),
 the matching logic is::
 
-    match = contains(expr1) OR contains(expr2) ... 
+    match = contains(expr1) OR contains(expr2) ...
 
 Negating that logic with C{-v} causes paragrep to match paragraphs with::
 
-    match = lacks(expr1) AND lacks(expr2) ... 
+    match = lacks(expr1) AND lacks(expr2) ...
 
 See Also
 ========
@@ -172,13 +172,15 @@ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 # $Id$
 
+from __future__ import with_statement
+
 # Info about the module
-__version__   = '3.0'
+__version__   = '3.0.1'
 __author__    = 'Brian Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://www.clapper.org/software/python/paragrep/'
@@ -193,228 +195,240 @@ __all__     = ['Paragrepper', 'main']
 # Imports
 # ---------------------------------------------------------------------------
 
-from grizzled.cmdline import CommandLineParser
 import string
 import sys
 import os
 import re
 
+from grizzled.cmdline import CommandLineParser
+from grizzled.exception import ExceptionWithMessage
+
 # ---------------------------------------------------------------------------
 # Classes
 # ---------------------------------------------------------------------------
 
+class ParagrepError(ExceptionWithMessage):
+    pass
+
 class Paragrepper(object):
-	"""
+    """
     Grep through a file, printing paragraphs that match one or more regular
     expressions.
     """
-	def __init__(self):
-		self.regexps = []
-		self.files = None
-		self.eopRegexp = None
-		self.anding = False
-		self.caseBlind = False
-		self.negate = False
+    def __init__(self):
+        self.regexps = []
+        self.files = None
+        self.eopRegexp = None
+        self.anding = False
+        self.caseBlind = False
+        self.negate = False
 
-		self.__printFileName = False
-		self.__printFileHeader = False
+        self.__printFileName = False
+        self.__printFileHeader = False
 
-	def grep(self):
-		if not self.files:
-			found = self.__search(sys.stdin)
+    def grep(self):
+        if not self.files:
+            found = self.__search(sys.stdin)
 
-		else:
-			self.__printFileName = len(self.files) > 1
-			found = False
-			for file in self.files:
-				f = open(file)
-				self.__printFileHeader = self.__printFileName
-				if self.__search(f, filename=file):
-					found = True
-				f.close()
+        else:
+            self.__printFileName = len(self.files) > 1
+            found = False
+            for file in self.files:
+                try:
+                    with open(file) as f:
+                        self.__printFileHeader = self.__printFileName
+                        if self.__search(f, filename=file):
+                            found = True
+                except IOError, (err, msg):
+                    raise ParagrepError("Can't open file \"%s\": %s" %
+                                        (file, msg))
 
-		return found
+        return found
 
 
-	# -----------------------------------------------------------------------
-	# Private Methods
-	# -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Private Methods
+    # -----------------------------------------------------------------------
 
-	def __search(self, f, filename=None):
-		paragraph = []
-		last_empty = False
-		found = False
+    def __search(self, f, filename=None):
+        paragraph = []
+        last_empty = False
+        found = False
 
-		for line in f.readlines():
-			if self.eopRegexp.match(line):
-				# End of current paragraph, or a redundent (consecutive)
-				# end-of-paragraph mark.  If it's truly the first one since
-				# the end of the paragraph, search the accumulated lines of
-				# the paragraph.
+        for line in f.readlines():
+            if self.eopRegexp.match(line):
+                # End of current paragraph, or a redundent (consecutive)
+                # end-of-paragraph mark.  If it's truly the first one since
+                # the end of the paragraph, search the accumulated lines of
+                # the paragraph.
 
-				if not last_empty:
-					last_empty = True
-					found = self.__searchParagraph(paragraph, filename)
-					paragraph = []
+                if not last_empty:
+                    last_empty = True
+                    found = self.__search_paragraph(paragraph, filename)
+                    paragraph = []
 
-			else:
-				# Save this line in the current paragraph buffer
+                else:
+                    # Save this line in the current paragraph buffer
 
-				if line[-1] == '\n':
-					line = line[:-1]
-				paragraph += [line]
-				last_empty = False
+                    if line[-1] == '\n':
+                        line = line[:-1]
+                    paragraph += [line]
+                    last_empty = False
 
-		# We might have a paragraph left in the buffer. If so, search it.
+        # We might have a paragraph left in the buffer. If so, search it.
 
-		if not last_empty:
-			found = self.__searchParagraph(paragraph, filename)
+        if not last_empty:
+            found = self.__search_paragraph(paragraph, filename)
 
-		return found
+        return found
 
-	def __searchParagraph(self, paragraph, filename):
-		found_count_must_be = 1
-		if self.anding:
-			# If ANDing, must match ALL the regular expressions.
+    def __search_paragraph(self, paragraph, filename):
+        found_count_must_be = 1
+        if self.anding:
+            # If ANDing, must match ALL the regular expressions.
 
-			found_count_must_be = len(self.regexps)
+            found_count_must_be = len(self.regexps)
 
-		paragraph_as_one_string = ' '.join(paragraph)
-		if self.caseBlind:
-			paragraph_as_one_string = paragraph_as_one_string.lower()
+        paragraph_as_one_string = ' '.join(paragraph)
+        if self.caseBlind:
+            paragraph_as_one_string = paragraph_as_one_string.lower()
 
-		total_found = 0
-		for re in self.regexps:
-			if re.search(paragraph_as_one_string):
-				total_found += 1
+        total_found = 0
+        for re in self.regexps:
+            if re.search(paragraph_as_one_string):
+                total_found += 1
 
-			if total_found == found_count_must_be:
-				break
+            if total_found == found_count_must_be:
+                break
 
-		if ((total_found == found_count_must_be) and (not self.negate)) or \
-		   ((total_found != found_count_must_be) and self.negate):
-			found = True
-			if self.__printFileHeader:
-				print '::::::::::\n%s\n::::::::::\n' % filename
-				self.__printFileHeader = False
-			print '\n'.join(paragraph) + '\n'
-		else:
-			found = False
+            if ((total_found == found_count_must_be) and (not self.negate)) or \
+               ((total_found != found_count_must_be) and self.negate):
+                found = True
+                if self.__printFileHeader:
+                    print '::::::::::\n%s\n::::::::::\n' % filename
+                    self.__printFileHeader = False
+                    print '\n'.join(paragraph) + '\n'
+            else:
+                found = False
 
-		return found
+            return found
 
 # ---------------------------------------------------------------------------
 # Main Program
 # ---------------------------------------------------------------------------
 
-def __loadExprFiles(files):
-	result = []
-	for file in files:
-		try:
-			f = open(file)
-		except IOError, (err, msg):
-			raise IOError, (err, "Can't open file \"%s\": %s" % (file, msg))
+def __load_expr_files(files):
+    result = []
+    for file in files:
+        try:
+            with open(file) as f:
+                for l in f.readlines():
+                    result += [l.strip()]
+        except IOError:
+            raise ParagrepError("Can't open file \"%s\": %s" % (file, msg))
 
-		for l in f.readlines():
-			result += [l.strip()]
-		f.close()
-	return result
+    return result
 
-def __parseParams(paragrepper, argv):
-	# Parse the command-line parameters
+def __parse_params(paragrepper, argv):
+    # Parse the command-line parameters
 
-	prog = os.path.basename(argv[0])
-	USAGE = \
+    prog = os.path.basename(argv[0])
+    USAGE = \
 '\n' \
 '%s [-aiotv] [-p EOP_REGEXP] [-e REGEXP] ... [-f EXP_FILE] ... [file] ...\n' \
 '               -OR-\n' \
 '%s [-itv] [-p EOP_REGEXP] regexp [file] ...' % (prog, prog)
 
-	parser = CommandLineParser(usage=USAGE)
-	parser.addOption('-a', '--and', action='store_true', dest='anding',
-			 help='Logically AND all regular expressions.')
-	parser.addOption('-e', '--regexp', '--expr', action='append',
-			 dest='regexps',
-			 help='Specify a regular expression to find.' \
-			 'This option may be specified multiple times.')
-	parser.addOption('-f', '--file', action='append', type='string',
-			 dest='exprFiles',
-			 help='Specify a file full of regular expressions, ' \
-			 'one per line.')
-	parser.addOption('-i', '--caseblind', action='store_true',
-			 dest='caseblind',
-			 help='Match without regard to case.')
-	parser.addOption('-o', '--or', action='store_false', dest='anding',
-			 help='Logically OR all regular expressions.')
-	parser.addOption('-p', '--eop', action='store', type='string',
-			 dest='eop_regexp', default=r'^\s*$',
-			 help=r'Specify an alternate regular expression ' \
-			 'to match end-of-paragraph. Default: %default')
-	parser.addOption('-v', '--negate', action='store_true', dest='negate',
-			 help='Negate the sense of the match.')
+    parser = CommandLineParser(usage=USAGE)
+    parser.add_option('-a', '--and', action='store_true', dest='anding',
+                      help='Logically AND all regular expressions.')
+    parser.add_option('-e', '--regexp', '--expr', action='append',
+                      dest='regexps',
+                      help='Specify a regular expression to find.' \
+                      'This option may be specified multiple times.')
+    parser.add_option('-f', '--file', action='append', type='string',
+                      dest='exprFiles',
+                      help='Specify a file full of regular expressions, ' \
+                      'one per line.')
+    parser.add_option('-i', '--caseblind', action='store_true',
+                      dest='caseblind',
+                      help='Match without regard to case.')
+    parser.add_option('-o', '--or', action='store_false', dest='anding',
+                      help='Logically OR all regular expressions.')
+    parser.add_option('-p', '--eop', action='store', type='string',
+                      dest='eop_regexp', default=r'^\s*$',
+                      help=r'Specify an alternate regular expression ' \
+                      'to match end-of-paragraph. Default: %default')
+    parser.add_option('-v', '--negate', action='store_true', dest='negate',
+                      help='Negate the sense of the match.')
 
-	(options, args) = parser.parseArgs(argv)
+    (options, args) = parser.parse_args(argv)
 
-	# Save the flag options
+    # Save the flag options
 
-	paragrepper.anding = options.anding
-	paragrepper.caseBlind = options.caseblind
-	paragrepper.negate = options.negate
+    paragrepper.anding = options.anding
+    paragrepper.caseBlind = options.caseblind
+    paragrepper.negate = options.negate
 
-	# Figure out where to get the regular expressions to find.
+    # Figure out where to get the regular expressions to find.
 
-	uncompiledRegexps = []
-	if options.regexps != None:
-		uncompiledRegexps += options.regexps
+    uncompiledRegexps = []
+    if options.regexps != None:
+        uncompiledRegexps += options.regexps
 
-	if options.exprFiles != None:
-		try:
-			uncompiledRegexps += __loadExprFiles(options.exprFiles)
-		except IOError, (errno, msg):
-			parser.error(msg)
+    if options.exprFiles != None:
+        try:
+            uncompiledRegexps += __load_expr_files(options.exprFiles)
+        except IOError, (errno, msg):
+            parser.error(msg)
 
-	# Try to compile the end-of-paragraph regular expression.
+    # Try to compile the end-of-paragraph regular expression.
 
-	try:
-		paragrepper.eopRegexp = re.compile(options.eop_regexp)
-	except Exception, msg:
-		parser.error('Bad regular expression "%s" to -p option' % \
-			     options.eop_regexp)
+    try:
+        paragrepper.eopRegexp = re.compile(options.eop_regexp)
+    except Exception, msg:
+        parser.error('Bad regular expression "%s" to -p option' % \
+                     options.eop_regexp)
 
-	args = args[1:]
-	if len(uncompiledRegexps) == 0:
-		# No -e or -f seen. Use first non-option parameter.
+    args = args[1:]
+    if len(uncompiledRegexps) == 0:
+        # No -e or -f seen. Use first non-option parameter.
 
-		try:
-			uncompiledRegexps += [args[0]]
-			del args[0]
-		except IndexError:
-			parser.error('Not enough arguments.')
+        try:
+            uncompiledRegexps += [args[0]]
+            del args[0]
+        except IndexError:
+            parser.error('Not enough arguments.')
 
-	# Compile the regular expressions and save the compiled results.
+    # Compile the regular expressions and save the compiled results.
 
-	for expr in uncompiledRegexps:
-		try:
-			paragrepper.regexps += [re.compile(expr)]
-		except Exception, msg:
-			parser.error('Bad regular expression: "%s"' % expr)
+    for expr in uncompiledRegexps:
+        try:
+            paragrepper.regexps += [re.compile(expr)]
+        except Exception, msg:
+            parser.error('Bad regular expression: "%s"' % expr)
 
-	# Are there any files, or are we searching standard input?
+    # Are there any files, or are we searching standard input?
 
-	if len(args) > 0:
-		paragrepper.files = args
+    if len(args) > 0:
+        paragrepper.files = args
 
 def main():
 
-	p = Paragrepper()
-	__parseParams(p, sys.argv)
-	found = p.grep()
-	if found:
-		rc = 0
-	else:
-		rc = 1
-	sys.exit(rc)
+    p = Paragrepper()
+    __parse_params(p, sys.argv)
+    try:
+        found = p.grep()
+        if found:
+            rc = 0
+        else:
+            rc = 1
+    except ParagrepError, ex:
+        print >> sys.stderr, ex.message
+        rc = 1
+
+    sys.exit(rc)
 
 
 if __name__ == "__main__":
-	main()
+    main()
