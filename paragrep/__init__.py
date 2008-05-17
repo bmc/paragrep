@@ -267,18 +267,19 @@ class Paragrepper(object):
                     found = self.__search_paragraph(paragraph, filename)
                     paragraph = []
 
-                else:
-                    # Save this line in the current paragraph buffer
+            else:
+                # Save this line in the current paragraph buffer
 
-                    if line[-1] == '\n':
-                        line = line[:-1]
-                    paragraph += [line]
-                    last_empty = False
+                if line[-1] == '\n':
+                    line = line[:-1]
+                paragraph += [line]
+                last_empty = False
 
         # We might have a paragraph left in the buffer. If so, search it.
 
         if not last_empty:
-            found = self.__search_paragraph(paragraph, filename)
+            if self.__search_paragraph(paragraph, filename):
+                found = True
 
         return found
 
@@ -286,7 +287,6 @@ class Paragrepper(object):
         found_count_must_be = 1
         if self.anding:
             # If ANDing, must match ALL the regular expressions.
-
             found_count_must_be = len(self.regexps)
 
         paragraph_as_one_string = ' '.join(paragraph)
@@ -298,16 +298,13 @@ class Paragrepper(object):
             if re.search(paragraph_as_one_string):
                 total_found += 1
 
-            if total_found == found_count_must_be:
-                break
-
             if ((total_found == found_count_must_be) and (not self.negate)) or \
                ((total_found != found_count_must_be) and self.negate):
                 found = True
                 if self.__printFileHeader:
                     print '::::::::::\n%s\n::::::::::\n' % filename
                     self.__printFileHeader = False
-                    print '\n'.join(paragraph) + '\n'
+                print '\n'.join(paragraph) + '\n'
             else:
                 found = False
 
