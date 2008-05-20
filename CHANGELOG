@@ -1,5 +1,9 @@
 $Id$
 
+Version 3.0.1 (20 May, 2008)
+
+- Updated to correspond to changes in the dependent Grizzled API.
+
 ---------------------------------------------------------------------------
 
 Version 3.0 (3 April, 2008)
