@@ -7,97 +7,99 @@ paragrep - Paragraph Grep utility
 Usage
 =====
 
-B{paragrep} [-aiotv] [-p I{eop_regexp}] [-e I{regexp}] ... [-f I{exp_file}] ... [I{file} ] ...
+**paragrep** [-aiotv] [-p *eop_regexp*] [-e *regexp*] ... [-f *exp_file*] ... [*file* ] ...
 
-B{paragrep} [-itv] [-p I{eop_regexp}] I{regexp} [I{file}] ...
+**paragrep** [-itv] [-p *eop_regexp*] *regexp* [*file*] ...
 
 
 Options
 -------
 
-Summary of options::
-
-    -h, --help            Show this message and exit.
-
-    -a, --and             Logically AND all regular expressions.
-
-    -o, --or              Logically OR all regular expressions.
-
-    -i, --caseblind       Match without regard to case.
-
-    -v, --negate          Negate the sense of the match.
-
-    -e regexp             Specify a regular expression to find.This option may
-    --regexp=regexp       be specified multiple times.
-    --expr=regexp
-
-    -p eop_regexp         Specify an alternate regular expression to match end-
-    --eop=eop_regexp      of-paragraph. Default: ^\s*$
-
-    -f expr_file          Specify a file full of regular expressions, one per
-    --file=expr_file      line.
+    +-------------------------+---------------------------------------------+
+    | OPTION                  | MEANING                                     |
+    +=========================+=============================================+
+    | ``-h, --help``          | Show this message and exit.                 |
+    +-------------------------+---------------------------------------------+
+    | ``-a, --and``           | Logically AND all regular expressions.      |
+    +-------------------------+---------------------------------------------+
+    | ``-o, --or``            | Logically OR all regular expressions.       |
+    +-------------------------+---------------------------------------------+
+    | ``-i, --caseblind``     | Match without regard to case.               |
+    +-------------------------+---------------------------------------------+
+    | ``-v, --negate``        | Negate the sense of the match.              |
+    +-------------------------+---------------------------------------------+
+    | ``-e regexp``           | Specify a regular expression to find. This  |
+    | ``--regexp=regexp``     | option may be specified multiple times.     |
+    | ``--expr=regexp``       |                                             |
+    +-------------------------+---------------------------------------------+
+    | ``-p eop_regexp``       | Specify an alternate regular expression to  |
+    | ``--eop=eop_regexp``    | match end-of-paragraph. Default: ``^\s*$``  |
+    +-------------------------+---------------------------------------------+
+    | ``-f expr_file``        | Specify a file full of regular expressions, |
+    | ``--file=expr_file``    | one per line.                               |
+    +-------------------------+---------------------------------------------+
 
 
 Description
 ===========
 
-B{paragrep} is a paragraph grep utility. It searches for a series of
-regular expressions in a text file (or several text files) and prints out
-the paragraphs containing those expressions. Normally B{paragrep} displays
-a paragraph if it contains any of the expressions; this behavior can be
-modified by using the C{-a} option.
+**paragrep** is a paragraph grep utility. It searches for a series of regular
+expressions in a text file (or several text files) and prints out the
+paragraphs containing those expressions. Normally **paragrep** displays a
+paragraph if it contains any of the expressions; this behavior can be modified
+by using the C{-a} option.
 
-By default, a paragraph is defined as a block of text delimited by an empty
-or blank line; this behavior can be altered with the C{-p} option.
+By default, a paragraph is defined as a block of text delimited by an empty or
+blank line; this behavior can be altered with the ``-p`` option.
 
-If no files are specified on the command line, B{paragrep} searches
+If no files are specified on the command line, **paragrep** searches
 standard input.
 
-This is the third implementation of B{paragrep}. The first implementation,
+This is the third implementation of **paragrep**. The first implementation,
 in 1989, was in C. The second implementation, in 2003, was in perl. This is
 the latest and greatest.
 
 Options in Detail
 -----------------
 
-C{-a}
-~~~~~
+``-a``
+~~~~~~~
 
-The I{and} option: Only display a paragraph if it contains I{all} the
-regular expressions specified. The default is to display a paragraph if
-it contains I{any} of the regular expressions. See the C{-o} option, below.
+The *and* option: Only display a paragraph if it contains *all* the regular
+expressions specified. The default is to display a paragraph if it contains
+*any* of the regular expressions. See the ``-o`` option, below.
 
-C{-e} I{expression}
+``-e`` *expression*
 ~~~~~~~~~~~~~~~~~~~
 
 Adds a regular expression to the set of expressions to use when matching
-paragraphs. More than one C{-e} argument may be specified. If there's only
-one expression, the C{-e} may be omitted for brevity. (Think I{sed}.)
+paragraphs. More than one ``-e`` argument may be specified. If there's only
+one expression, the ``-e`` may be omitted for brevity. (Think *sed*.)
 
-C{-f} I{expfile}
+``-f`` *expfile*
 ~~~~~~~~~~~~~~~~
 
 Specifies a file containing regular expressions, one expression per line.
 Each expression in the file is added to the set of expression against which
-paragraphs are to be matched.   More than one C{-f} argument is permitted.
-Also, C{-f} and C{-e} may be specified together.
+paragraphs are to be matched.   More than one ``-f`` argument is permitted.
+Also, ``-f`` and ``-e`` may be specified together.
 
-C{-i}
-~~~~~
+``-i``
+~~~~~~
 
 Considers upper- and lower-case letters to be identical when making comparisons.
 
-C{-o}
-~~~~~
+``-o``
+~~~~~~
 
-The I{or} option: Display a paragraph if it contains I{any} the
-regular expressions specified. Since this option is the default, it is
-rarely specified on the command line. It exists primarily to negate the
-effect of a previous C{-a} option. (e.g., If you've defined an alias for
-B{paragrep} that specifies the C{-a} option, C{-o} would be necessary to
-force the I{or} behavior.)
+The *or* option: Display a paragraph if it contains *any* the regular
+expressions specified. Since this option is the default, it is rarely
+specified on the command line. It exists primarily to negate the effect of a
+previous ``-a`` option. (e.g., If you've defined an alias for **paragrep**
+that specifies the ``-a`` option, ``-o`` would be necessary to force the *or*
+behavior.)
 
-C{-p} I{eop_expression}
+``-p`` *eop_expression*
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Specifies a regular expression to be used match paragraph delimiters.  Any
@@ -108,37 +110,37 @@ defaults to::
 
     ^[ \\t]*$
 
-which matches blank or empty lines. (C{\\t} represents the horizontal tab
+which matches blank or empty lines. (``\\\\t`` represents the horizontal tab
 character. If you need to specify a horizontal tab, you'll need to type the
-actual character; B{paragrep} doesn't recognize C-style metacharacters.)
+actual character; **paragrep** doesn't recognize C-style metacharacters.)
 
-C{-v}
-~~~~~
+``-v``
+~~~~~~
 
-Displays all lines that do not match specified expressions.  The negation
-logic works on DeMorgan's Laws.  Normally, if C{-a} is specified,
-B{paragrep} uses the following logic to match the paragraph::
+Displays all lines that do not match specified expressions. The negation logic
+works on DeMorgan's Laws. Normally, if ``-a`` is specified, **paragrep** uses
+the following logic to match the paragraph::
 
     match = contains(expr1) AND contains(expr2) ...
 
-Specifying C{-v} along with C{-a} changes this logic to::
+Specifying ``-v`` along with ``-a`` changes this logic to::
 
     match = lacks(expr1) OR lacks(expr2) ...
 
-Likewise, without C{-a} or C{-v} (i.e., using C{-o}, which is the default),
+Likewise, without ``-a`` or ``-v`` (i.e., using ``-o``, which is the default),
 the matching logic is::
 
     match = contains(expr1) OR contains(expr2) ...
 
-Negating that logic with C{-v} causes paragrep to match paragraphs with::
+Negating that logic with ``-v`` causes paragrep to match paragraphs with::
 
     match = lacks(expr1) AND lacks(expr2) ...
 
 See Also
 ========
 
- - The Unix I{grep}(1) command
- - The Python U{C{re} module<http://docs.python.org/lib/module-re.html>}
+ - The Unix *grep* command
+ - The Python ``re`` module (http://docs.python.org/lib/module-re.html)
 
 Copyright and License
 =====================
@@ -177,10 +179,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # $Id$
 
+__docformat__ = 'restructuredtext'
+
+
 from __future__ import with_statement
 
 # Info about the module
-__version__   = '3.0.1'
+__version__   = '3.0.2'
 __author__    = 'Brian Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://www.clapper.org/software/python/paragrep/'
