@@ -15,30 +15,27 @@ Usage
 Options
 -------
 
-    +-------------------------+---------------------------------------------+
-    | OPTION                  | MEANING                                     |
-    +=========================+=============================================+
-    | ``-h, --help``          | Show this message and exit.                 |
-    +-------------------------+---------------------------------------------+
-    | ``-a, --and``           | Logically AND all regular expressions.      |
-    +-------------------------+---------------------------------------------+
-    | ``-o, --or``            | Logically OR all regular expressions.       |
-    +-------------------------+---------------------------------------------+
-    | ``-i, --caseblind``     | Match without regard to case.               |
-    +-------------------------+---------------------------------------------+
-    | ``-v, --negate``        | Negate the sense of the match.              |
-    +-------------------------+---------------------------------------------+
-    | ``-e regexp``           | Specify a regular expression to find. This  |
-    | ``--regexp=regexp``     | option may be specified multiple times.     |
-    | ``--expr=regexp``       |                                             |
-    +-------------------------+---------------------------------------------+
-    | ``-p eop_regexp``       | Specify an alternate regular expression to  |
-    | ``--eop=eop_regexp``    | match end-of-paragraph. Default: ``^\s*$``  |
-    +-------------------------+---------------------------------------------+
-    | ``-f expr_file``        | Specify a file full of regular expressions, |
-    | ``--file=expr_file``    | one per line.                               |
-    +-------------------------+---------------------------------------------+
+  -a, --and                                   Logically *AND* all regular 
+                                              expressions
 
+  -e regexp, --regexp=regexp, --expr=regexp   Specify a regular expression 
+                                              to find. This option may be
+                                              specified multiple times.
+
+  -f expr_file, --file=expr_file              Specify a file of regular
+                                              expressions, one per line.
+
+  -h, --help                                  Show this message and exit
+
+  -i, --caseblind                             Match without regard to case
+
+  -o, --or                                    Logically *OR* all regular 
+                                              expressions
+
+  -p eop_regexp, --eop=eop_regexp             Specify an alternate regular
+                                              expression to match the end
+                                              of a paragraph. Default: 
+                                              ``^\s*$``
 
 Description
 ===========
