@@ -176,10 +176,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # $Id$
 
-__docformat__ = 'restructuredtext'
-
-
 from __future__ import with_statement
+
+__docformat__ = 'restructuredtext'
 
 # Info about the module
 __version__   = '3.0.2'
