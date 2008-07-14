@@ -44,7 +44,7 @@ Description
 expressions in a text file (or several text files) and prints out the
 paragraphs containing those expressions. Normally **paragrep** displays a
 paragraph if it contains any of the expressions; this behavior can be modified
-by using the C{-a} option.
+by using the ``-a`` option.
 
 By default, a paragraph is defined as a block of text delimited by an empty or
 blank line; this behavior can be altered with the ``-p`` option.
