@@ -32,7 +32,6 @@ def load_info():
     return result
 
 info = load_info()
-print info['long_description']
 
 # Now the setup stuff.
 
