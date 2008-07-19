@@ -11,8 +11,9 @@ from setuptools import setup, find_packages
 import re
 import sys
 import os
+import imp
 
-def loadInfo():
+def load_info():
     # Look for identifiers beginning with "__" at the beginning of the line.
 
     result = {}
@@ -22,15 +23,23 @@ def loadInfo():
         match = pattern.match(line)
         if match:
             result[match.group(1)] = match.group(2)
+
+    sys.path = [here] + sys.path
+    mf = os.path.join(here, 'paragrep', '__init__.py')
+    m = imp.load_module('paragrep', open(mf), mf,
+                        ('__init__.py', 'r', imp.PY_SOURCE))
+    result['long_description'] = m.__doc__
     return result
 
-info = loadInfo()
+info = load_info()
+print info['long_description']
 
 # Now the setup stuff.
 
 setup (name             = 'paragrep',
        version          = info['__version__'],
        description      = "Print paragraphs matching regular expressions",
+       long_description = info['long_description'],
        packages         = find_packages(),
        url              = info['__url__'],
        license          = info['__license__'],
