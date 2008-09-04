@@ -1,9 +1,12 @@
 $Id$
 ---------------------------------------------------------------------------
 
-Version 3.0.2 (...)
+Version 3.0.2 (3 September, 2008)
 
 - Changed epydoc markup to use reStructuredText.
+- Now properly matches anchored regular expressions (e.g., "^foo") against
+  individual lines, rather than the entire paragraph as a whole.
+- Added --version option.
 
 ---------------------------------------------------------------------------
 

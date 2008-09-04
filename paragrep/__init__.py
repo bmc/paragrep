@@ -182,7 +182,7 @@ __docformat__ = 'restructuredtext'
 
 # Info about the module
 __version__   = '3.0.2'
-__author__    = 'Brian Clapper'
+__author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://www.clapper.org/software/python/paragrep/'
 __copyright__ = '1989-2008 Brian M. Clapper'
@@ -205,6 +205,13 @@ from grizzled.cmdline import CommandLineParser
 from grizzled.exception import ExceptionWithMessage
 
 # ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+FULL_VERSION_STRING = 'paragrep, Version %s. Copyright %s' %\
+                    (__version__, __copyright__)
+
+# ---------------------------------------------------------------------------
 # Classes
 # ---------------------------------------------------------------------------
 
@@ -223,6 +230,7 @@ class Paragrepper(object):
         self.anding = False
         self.caseBlind = False
         self.negate = False
+        self.show_version = False
 
         self.__printFileName = False
         self.__printFileHeader = False
@@ -296,8 +304,11 @@ class Paragrepper(object):
 
         total_found = 0
         for re in self.regexps:
-            if re.search(paragraph_as_one_string):
-                total_found += 1
+
+            for line in paragraph:
+                if re.search(line):
+                    total_found += 1
+                    break
 
             if ((total_found == found_count_must_be) and (not self.negate)) or \
                ((total_found != found_count_must_be) and self.negate):
@@ -359,6 +370,8 @@ def __parse_params(paragrepper, argv):
                       'to match end-of-paragraph. Default: %default')
     parser.add_option('-v', '--negate', action='store_true', dest='negate',
                       help='Negate the sense of the match.')
+    parser.add_option('--version', action='store_true', dest='show_version',
+                      help='Show version and exit.')
 
     (options, args) = parser.parse_args(argv)
 
@@ -367,6 +380,7 @@ def __parse_params(paragrepper, argv):
     paragrepper.anding = options.anding
     paragrepper.caseBlind = options.caseblind
     paragrepper.negate = options.negate
+    paragrepper.show_version = options.show_version
 
     # Figure out where to get the regular expressions to find.
 
@@ -413,17 +427,20 @@ def __parse_params(paragrepper, argv):
 
 def main():
 
+    rc = 0
     p = Paragrepper()
     __parse_params(p, sys.argv)
-    try:
-        found = p.grep()
-        if found:
-            rc = 0
-        else:
+    if p.show_version:
+        print FULL_VERSION_STRING
+
+    else:
+        try:
+            found = p.grep()
+            if not found:
+                rc = 1
+        except ParagrepError, ex:
+            print >> sys.stderr, ex.message
             rc = 1
-    except ParagrepError, ex:
-        print >> sys.stderr, ex.message
-        rc = 1
 
     sys.exit(rc)
 
