@@ -26,9 +26,12 @@ def load_info():
 
     sys.path = [here] + sys.path
     mf = os.path.join(here, 'paragrep', '__init__.py')
-    m = imp.load_module('paragrep', open(mf), mf,
-                        ('__init__.py', 'r', imp.PY_SOURCE))
-    result['long_description'] = m.__doc__
+    try:
+        m = imp.load_module('paragrep', open(mf), mf,
+                            ('__init__.py', 'r', imp.PY_SOURCE))
+        result['long_description'] = m.__doc__
+    except:
+        pass
     return result
 
 info = load_info()
