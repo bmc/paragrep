@@ -46,7 +46,7 @@ setup (name             = 'paragrep',
        author           = info['__author__'],
        author_email     = info['__email__'],
        entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
-       install_requires = ['grizzled>=0.4'],
+       install_requires = ['grizzled>=0.8.1', ],
        data_files       = [('man', ['man/paragrep.1'])],
        classifiers = [
         'Intended Audience :: Developers',
