@@ -1,1 +1,2 @@
 include LICENSE README
+recursive-include man *
