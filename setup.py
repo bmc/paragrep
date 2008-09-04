@@ -13,6 +13,8 @@ import sys
 import os
 import imp
 
+DESCRIPTION = "Print paragraphs matching regular expressions"
+
 def load_info():
     # Look for identifiers beginning with "__" at the beginning of the line.
 
@@ -31,7 +33,7 @@ def load_info():
                             ('__init__.py', 'r', imp.PY_SOURCE))
         result['long_description'] = m.__doc__
     except:
-        pass
+        result['long_description'] = DESCRIPTION
     return result
 
 info = load_info()
@@ -40,7 +42,7 @@ info = load_info()
 
 setup (name             = 'paragrep',
        version          = info['__version__'],
-       description      = "Print paragraphs matching regular expressions",
+       description      = DESCRIPTION,
        long_description = info['long_description'],
        packages         = find_packages(),
        py_modules       = ['ez_setup'],
