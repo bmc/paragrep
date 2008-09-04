@@ -40,6 +40,7 @@ setup (name             = 'paragrep',
        description      = "Print paragraphs matching regular expressions",
        long_description = info['long_description'],
        packages         = find_packages(),
+       py_modules       = ['ez_setup'],
        url              = info['__url__'],
        license          = info['__license__'],
        author           = info['__author__'],
@@ -53,6 +54,6 @@ setup (name             = 'paragrep',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Topic :: Text Processing :: Filters',
-        'Topic :: Utilities',
-        ]
+'Topic :: Utilities',
+]
 )
