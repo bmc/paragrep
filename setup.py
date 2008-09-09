@@ -59,6 +59,6 @@ setup (name             = 'paragrep',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Topic :: Text Processing :: Filters',
-'Topic :: Utilities',
+        'Topic :: Utilities',
 ]
 )

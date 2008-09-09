@@ -1,6 +1,11 @@
 $Id$
 ---------------------------------------------------------------------------
 
+Version 3.0.3 (...)
+
+- Version (--version) option is now handled by the option parser.
+
+---------------------------------------------------------------------------
 Version 3.0.2 (3 September, 2008)
 
 - Changed epydoc markup to use reStructuredText.
@@ -10,13 +15,11 @@ Version 3.0.2 (3 September, 2008)
 - Now properly bundles ez_setup.py
 
 ---------------------------------------------------------------------------
-
 Version 3.0.1 (20 May, 2008)
 
 - Updated to correspond to changes in the dependent Grizzled API.
 
 ---------------------------------------------------------------------------
-
 Version 3.0 (3 April, 2008)
 
 - Initial version posted to the web.

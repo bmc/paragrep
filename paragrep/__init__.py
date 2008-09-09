@@ -348,7 +348,7 @@ def __parse_params(paragrepper, argv):
 '               -OR-\n' \
 '%s [-itv] [-p EOP_REGEXP] regexp [file] ...' % (prog, prog)
 
-    parser = CommandLineParser(usage=USAGE)
+    parser = CommandLineParser(usage=USAGE, version=FULL_VERSION_STRING)
     parser.add_option('-a', '--and', action='store_true', dest='anding',
                       help='Logically AND all regular expressions.')
     parser.add_option('-e', '--regexp', '--expr', action='append',
@@ -370,8 +370,6 @@ def __parse_params(paragrepper, argv):
                       'to match end-of-paragraph. Default: %default')
     parser.add_option('-v', '--negate', action='store_true', dest='negate',
                       help='Negate the sense of the match.')
-    parser.add_option('--version', action='store_true', dest='show_version',
-                      help='Show version and exit.')
 
     (options, args) = parser.parse_args(argv)
 
@@ -380,7 +378,6 @@ def __parse_params(paragrepper, argv):
     paragrepper.anding = options.anding
     paragrepper.caseBlind = options.caseblind
     paragrepper.negate = options.negate
-    paragrepper.show_version = options.show_version
 
     # Figure out where to get the regular expressions to find.
 
@@ -430,17 +427,13 @@ def main():
     rc = 0
     p = Paragrepper()
     __parse_params(p, sys.argv)
-    if p.show_version:
-        print FULL_VERSION_STRING
-
-    else:
-        try:
-            found = p.grep()
-            if not found:
-                rc = 1
-        except ParagrepError, ex:
-            print >> sys.stderr, ex.message
+    try:
+        found = p.grep()
+        if not found:
             rc = 1
+    except ParagrepError, ex:
+        print >> sys.stderr, ex.message
+        rc = 1
 
     sys.exit(rc)
 
