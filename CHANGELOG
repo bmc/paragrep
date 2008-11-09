@@ -4,6 +4,8 @@ $Id$
 Version 3.0.3 (...)
 
 - Version (--version) option is now handled by the option parser.
+- Removed left-over camel case variable names.
+- Fixed -i (case-blind) matching, which wasn't working.
 
 ---------------------------------------------------------------------------
 Version 3.0.2 (3 September, 2008)

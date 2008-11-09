@@ -181,7 +181,7 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.2'
+__version__   = '3.0.3'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://www.clapper.org/software/python/paragrep/'
@@ -226,26 +226,26 @@ class Paragrepper(object):
     def __init__(self):
         self.regexps = []
         self.files = None
-        self.eopRegexp = None
+        self.eop_regexp = None
         self.anding = False
-        self.caseBlind = False
+        self.case_blind = False
         self.negate = False
         self.show_version = False
 
-        self.__printFileName = False
-        self.__printFileHeader = False
+        self.__print_file_name = False
+        self.__print_file_header = False
 
     def grep(self):
         if not self.files:
             found = self.__search(sys.stdin)
 
         else:
-            self.__printFileName = len(self.files) > 1
+            self.__print_file_name = len(self.files) > 1
             found = False
             for file in self.files:
                 try:
                     with open(file) as f:
-                        self.__printFileHeader = self.__printFileName
+                        self.__print_file_header = self.__print_file_name
                         if self.__search(f, filename=file):
                             found = True
                 except IOError, (err, msg):
@@ -265,7 +265,7 @@ class Paragrepper(object):
         found = False
 
         for line in f.readlines():
-            if self.eopRegexp.match(line):
+            if self.eop_regexp.match(line):
                 # End of current paragraph, or a redundent (consecutive)
                 # end-of-paragraph mark.  If it's truly the first one since
                 # the end of the paragraph, search the accumulated lines of
@@ -299,7 +299,7 @@ class Paragrepper(object):
             found_count_must_be = len(self.regexps)
 
         paragraph_as_one_string = ' '.join(paragraph)
-        if self.caseBlind:
+        if self.case_blind:
             paragraph_as_one_string = paragraph_as_one_string.lower()
 
         total_found = 0
@@ -313,9 +313,9 @@ class Paragrepper(object):
             if ((total_found == found_count_must_be) and (not self.negate)) or \
                ((total_found != found_count_must_be) and self.negate):
                 found = True
-                if self.__printFileHeader:
+                if self.__print_file_header:
                     print '::::::::::\n%s\n::::::::::\n' % filename
-                    self.__printFileHeader = False
+                    self.__print_file_header = False
                 print '\n'.join(paragraph) + '\n'
             else:
                 found = False
@@ -376,44 +376,45 @@ def __parse_params(paragrepper, argv):
     # Save the flag options
 
     paragrepper.anding = options.anding
-    paragrepper.caseBlind = options.caseblind
+    paragrepper.case_blind = options.caseblind
     paragrepper.negate = options.negate
 
     # Figure out where to get the regular expressions to find.
 
-    uncompiledRegexps = []
+    uncompiled_regexps = []
     if options.regexps != None:
-        uncompiledRegexps += options.regexps
+        uncompiled_regexps += options.regexps
 
     if options.exprFiles != None:
         try:
-            uncompiledRegexps += __load_expr_files(options.exprFiles)
+            uncompiled_regexps += __load_expr_files(options.exprFiles)
         except IOError, (errno, msg):
             parser.error(msg)
 
     # Try to compile the end-of-paragraph regular expression.
 
     try:
-        paragrepper.eopRegexp = re.compile(options.eop_regexp)
+        paragrepper.eop_regexp = re.compile(options.eop_regexp)
     except Exception, msg:
         parser.error('Bad regular expression "%s" to -p option' % \
                      options.eop_regexp)
 
     args = args[1:]
-    if len(uncompiledRegexps) == 0:
+    if len(uncompiled_regexps) == 0:
         # No -e or -f seen. Use first non-option parameter.
 
         try:
-            uncompiledRegexps += [args[0]]
+            uncompiled_regexps += [args[0]]
             del args[0]
         except IndexError:
             parser.error('Not enough arguments.')
 
     # Compile the regular expressions and save the compiled results.
 
-    for expr in uncompiledRegexps:
+    flags = re.IGNORECASE if paragrepper.case_blind else None
+    for expr in uncompiled_regexps:
         try:
-            paragrepper.regexps += [re.compile(expr)]
+            paragrepper.regexps += [re.compile(expr, flags)]
         except Exception, msg:
             parser.error('Bad regular expression: "%s"' % expr)
 
