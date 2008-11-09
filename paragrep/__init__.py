@@ -37,6 +37,10 @@ Options
                                               of a paragraph. Default: 
                                               ``^\s*$``
 
+  -v, --negate                                Negate the sense of the match.
+  
+  --version                                   Display version and exit.
+
 Description
 ===========
 
@@ -352,11 +356,11 @@ def __parse_params(paragrepper, argv):
     parser.add_option('-a', '--and', action='store_true', dest='anding',
                       help='Logically AND all regular expressions.')
     parser.add_option('-e', '--regexp', '--expr', action='append',
-                      dest='regexps',
+                      dest='regexps', metavar='regexp',
                       help='Specify a regular expression to find.' \
                       'This option may be specified multiple times.')
     parser.add_option('-f', '--file', action='append', type='string',
-                      dest='exprFiles',
+                      dest='exprFiles', metavar='exprfile',
                       help='Specify a file full of regular expressions, ' \
                       'one per line.')
     parser.add_option('-i', '--caseblind', action='store_true',
@@ -365,7 +369,7 @@ def __parse_params(paragrepper, argv):
     parser.add_option('-o', '--or', action='store_false', dest='anding',
                       help='Logically OR all regular expressions.')
     parser.add_option('-p', '--eop', action='store', type='string',
-                      dest='eop_regexp', default=r'^\s*$',
+                      dest='eop_regexp', default=r'^\s*$', metavar='eop_regexp',
                       help=r'Specify an alternate regular expression ' \
                       'to match end-of-paragraph. Default: %default')
     parser.add_option('-v', '--negate', action='store_true', dest='negate',
