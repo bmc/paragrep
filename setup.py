@@ -5,12 +5,14 @@
 # $Id$
 # ---------------------------------------------------------------------------
 
+import sys
+import os
+sys.path += [os.getcwd()]
+
 import ez_setup
 ez_setup.use_setuptools(download_delay=2)
 from setuptools import setup, find_packages
 import re
-import sys
-import os
 import imp
 
 DESCRIPTION = "Print paragraphs matching regular expressions"
