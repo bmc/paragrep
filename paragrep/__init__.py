@@ -185,7 +185,7 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.3'
+__version__   = '3.0.4'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://www.clapper.org/software/python/paragrep/'
@@ -268,7 +268,7 @@ class Paragrepper(object):
         last_empty = False
         found = False
 
-        for line in f.readlines():
+        for line in f:
             if self.eop_regexp.match(line):
                 # End of current paragraph, or a redundent (consecutive)
                 # end-of-paragraph mark.  If it's truly the first one since

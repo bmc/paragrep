@@ -1,6 +1,11 @@
 $Id$
 ---------------------------------------------------------------------------
 
+Version 3.0.3 (...)
+
+- Now reads lines from the files in a more memory-efficient manner.
+
+---------------------------------------------------------------------------
 Version 3.0.3 (9 November, 2008)
 
 - Version (--version) option is now handled by the option parser.
