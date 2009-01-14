@@ -418,7 +418,11 @@ def __parse_params(paragrepper, argv):
     flags = re.IGNORECASE if paragrepper.case_blind else None
     for expr in uncompiled_regexps:
         try:
-            paragrepper.regexps += [re.compile(expr, flags)]
+            if flags:
+                re_args = (expr, flags)
+            else:
+                re_args = (expr,)
+            paragrepper.regexps += [re.compile(*re_args)]
         except Exception, msg:
             parser.error('Bad regular expression: "%s"' % expr)
 
