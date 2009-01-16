@@ -1,7 +1,7 @@
 $Id$
 ---------------------------------------------------------------------------
 
-Version 3.0.3 (...)
+Version 3.0.4 (16 January, 2009)
 
 - Now reads lines from the files in a more memory-efficient manner.
 - Fixed problem with compilation of regexps.
