@@ -1,6 +1,11 @@
 $Id$
 ---------------------------------------------------------------------------
 
+Version 3.0.5 (...)
+
+- Updated to latest version of ez_setup.py
+
+---------------------------------------------------------------------------
 Version 3.0.4 (16 January, 2009)
 
 - Now reads lines from the files in a more memory-efficient manner.
