@@ -158,7 +158,7 @@ Brian M. Clapper, [bmc@clapper.org][]
 
 ## Copyright
 
-Copyright &copy; 2008-2010 Brian M. Clapper
+Copyright &copy; 1998-2010 Brian M. Clapper
 
 ## License
 
