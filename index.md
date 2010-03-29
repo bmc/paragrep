@@ -1,5 +1,5 @@
 ---
-title: paragrep, a paragrap grep
+title: paragrep, a paragraph grep tool
 layout: withTOC
 ---
 
