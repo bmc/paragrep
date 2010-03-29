@@ -146,9 +146,11 @@ home directory) type:
 
 ## Trivia
 
-This is the third implementation of paragrep. The first implementation, in
-1989, was in C. The second implementation, in 2003, was in perl. This is
+This is the third implementation of *paragrep*. The first implementation, in
+1989, was in C. The second implementation, in 2003, was in [Perl][]. This is
 the latest and greatest.
+
+[Perl]: http://www.perl.org/
 
 ## Author
 
