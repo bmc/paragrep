@@ -185,10 +185,10 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.4'
+__version__   = '3.0.5'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
-__url__       = 'http://www.clapper.org/software/python/paragrep/'
+__url__       = 'http://bmc.github.com/paragrep/'
 __copyright__ = '1989-2008 Brian M. Clapper'
 __license__   = 'BSD-style license'
 
