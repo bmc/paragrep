@@ -122,10 +122,10 @@ command (usually as `root` or the system administrator):
 
 ### Installing from source
 
-You can also install *paragrep* from source. Either download the source
-(as a zip or tarball) from <http://github.com/bmc/paragrep/downloads>, or
-you can make a local read-only clone of the [Git repository][] using one of
-the following commands:
+You can also install *paragrep* from source. Either download the source (as
+a zip or tarball) from <http://github.com/bmc/paragrep/downloads>, or make
+a local read-only clone of the [Git repository][] using one of the
+following commands:
 
     $ git clone git://github.com/bmc/paragrep.git
     $ git clone http://github.com/bmc/paragrep.git
