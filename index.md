@@ -132,7 +132,7 @@ following commands:
 
 [EasyInstall]: http://peak.telecommunity.com/DevCenter/EasyInstall
 [PyPI]: http://pypi.python.org/pypi
-[Git repository]: http://github.com/bmc/paragrep.git
+[Git repository]: http://github.com/bmc/paragrep
 
 Once you have a local `paragrep` source directory, change your working directory
 to the source directory, and type:
