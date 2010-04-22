@@ -108,8 +108,6 @@ Negating that logic with `-v` causes paragrep to match paragraphs with:
 
     match = lacks(expr1) AND lacks(expr2) ...
 
-[De Morgan's laws]: http://en.wikipedia.org/wiki/De_Morgan's_laws
-
 ## Getting and installing *paragrep*
 
 ### Installing via EasyInstall
@@ -124,15 +122,11 @@ command (usually as `root` or the system administrator):
 
 You can also install *paragrep* from source. Either download the source (as
 a zip or tarball) from <http://github.com/bmc/paragrep/downloads>, or make
-a local read-only clone of the [Git repository][] using one of the
+a local read-only clone of the [GitHub repository][] using one of the
 following commands:
 
     $ git clone git://github.com/bmc/paragrep.git
     $ git clone http://github.com/bmc/paragrep.git
-
-[EasyInstall]: http://peak.telecommunity.com/DevCenter/EasyInstall
-[PyPI]: http://pypi.python.org/pypi
-[Git repository]: http://github.com/bmc/paragrep
 
 Once you have a local `paragrep` source directory, change your working directory
 to the source directory, and type:
@@ -150,13 +144,10 @@ This is the third implementation of *paragrep*. The first implementation, in
 1989, was in C. The second implementation, in 2003, was in [Perl][]. This is
 the latest and greatest.
 
-[Perl]: http://www.perl.org/
 
 ## Author
 
-Brian M. Clapper, [bmc@clapper.org][]
-
-[bmc@clapper.org]: mailto:bmc@clapper.org
+[Brian M. Clapper][]
 
 ## Copyright
 
@@ -164,6 +155,23 @@ Copyright &copy; 1998-2010 Brian M. Clapper
 
 ## License
 
-BSD-style license. See accompanying [license][] file.
+[BSD license][].
 
-[license]: license.html
+## Patches
+
+I gladly accept patches from their original authors. Feel free to email
+patches to me or to fork the [GitHub repository][] and send me a pull
+request. Along with any patch you send:
+
+* Please state that the patch is your original work.
+* Please indicate that you license the work to the SQLShell project
+  under a [BSD License][].
+
+
+[BSD license]: license.html
+[GitHub repository]: http://github.com/bmc/paragrep
+[De Morgan's laws]: http://en.wikipedia.org/wiki/De_Morgan's_laws
+[EasyInstall]: http://peak.telecommunity.com/DevCenter/EasyInstall
+[PyPI]: http://pypi.python.org/pypi
+[Perl]: http://www.perl.org/
+[Brian M. Clapper]: mailto:bmc@clapper.org
