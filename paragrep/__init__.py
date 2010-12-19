@@ -188,7 +188,7 @@ __docformat__ = 'restructuredtext'
 __version__   = '3.0.5'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
-__url__       = 'http://bmc.github.com/paragrep/'
+__url__       = 'http://software.clapper.org/paragrep/'
 __copyright__ = '1989-2008 Brian M. Clapper'
 __license__   = 'BSD-style license'
 

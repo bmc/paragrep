@@ -1,0 +1,5 @@
+build
+dist
+paragrep.egg-info
+*.egg
+*.pyc
