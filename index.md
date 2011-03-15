@@ -110,13 +110,13 @@ Negating that logic with `-v` causes paragrep to match paragraphs with:
 
 ## Getting and installing *paragrep*
 
-### Installing via EasyInstall
+### Installing via pip
 
-Because *paragrep* is available via [PyPI][], if you have [EasyInstall][]
+Because *paragrep* is available via [PyPI][], if you have [pip][]
 installed on your system, installing *paragrep* is as easy as running this
 command (usually as `root` or the system administrator):
 
-    easy_install paragrep
+    pip install paragrep
 
 ### Installing from source
 
@@ -151,7 +151,7 @@ the latest and greatest.
 
 ## Copyright
 
-Copyright &copy; 1998-2010 Brian M. Clapper
+Copyright &copy; 1998-2011 Brian M. Clapper
 
 ## License
 
@@ -171,7 +171,7 @@ request. Along with any patch you send:
 [BSD license]: license.html
 [GitHub repository]: http://github.com/bmc/paragrep
 [De Morgan's laws]: http://en.wikipedia.org/wiki/De_Morgan's_laws
-[EasyInstall]: http://peak.telecommunity.com/DevCenter/EasyInstall
 [PyPI]: http://pypi.python.org/pypi
 [Perl]: http://www.perl.org/
 [Brian M. Clapper]: mailto:bmc@clapper.org
+[pip]: http://pip-installer.org/
