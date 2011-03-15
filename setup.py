@@ -40,9 +40,14 @@ def load_info():
 
 info = load_info()
 
+NAME = 'paragrep'
+DOWNLOAD_URL = ('http://pypi.python.org/packages/source/p/%s/%s-%s.tar.gz' %
+                (NAME, NAME, module.version))
+
 # Now the setup stuff.
 
-setup (name             = 'paragrep',
+setup (name             = NAME,
+       download_url     = DOWNLOAD_URL,
        version          = info['__version__'],
        description      = DESCRIPTION,
        long_description = info['long_description'],
@@ -53,7 +58,7 @@ setup (name             = 'paragrep',
        author           = info['__author__'],
        author_email     = info['__email__'],
        entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
-       install_requires = ['grizzled>=0.8.1', ],
+       install_requires = ['grizzled-python>=1.0', ],
        data_files       = [('man', ['man/paragrep.1'])],
        classifiers = [
         'Intended Audience :: Developers',
