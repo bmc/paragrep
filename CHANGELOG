@@ -1,6 +1,12 @@
 Change log for paragrep
 ---------------------------------------------------------------------------
 
+Version 3.0.7 (6 March, 2012)
+
+- Removed unused "-t" option from option summary in usage message.
+
+---------------------------------------------------------------------------
+
 Version 3.0.6 (14 March, 2011)
 
 - Removed setup.py dependency on ez_setup.

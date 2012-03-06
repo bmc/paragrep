@@ -7,9 +7,9 @@ paragrep - Paragraph Grep utility
 Usage
 =====
 
-**paragrep** [-aiotv] [-p *eop_regexp*] [-e *regexp*] ... [-f *exp_file*] ... [*file* ] ...
+**paragrep** [-aiov] [-p *eop_regexp*] [-e *regexp*] ... [-f *exp_file*] ... [*file* ] ...
 
-**paragrep** [-itv] [-p *eop_regexp*] *regexp* [*file*] ...
+**paragrep** [-iv] [-p *eop_regexp*] *regexp* [*file*] ...
 
 
 Options
@@ -184,7 +184,7 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.6'
+__version__   = '3.0.7'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
