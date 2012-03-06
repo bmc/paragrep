@@ -347,9 +347,9 @@ def __parse_params(paragrepper, argv):
     prog = os.path.basename(argv[0])
     USAGE = \
 '\n' \
-'%s [-aiotv] [-p EOP_REGEXP] [-e REGEXP] ... [-f EXP_FILE] ... [file] ...\n' \
+'%s [-aiov] [-p EOP_REGEXP] [-e REGEXP] ... [-f EXP_FILE] ... [file] ...\n' \
 '               -OR-\n' \
-'%s [-itv] [-p EOP_REGEXP] regexp [file] ...' % (prog, prog)
+'%s [-iv] [-p EOP_REGEXP] regexp [file] ...' % (prog, prog)
 
     parser = CommandLineParser(usage=USAGE, version=FULL_VERSION_STRING)
     parser.add_option('-a', '--and', action='store_true', dest='anding',
