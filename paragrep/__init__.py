@@ -146,7 +146,7 @@ See Also
 Copyright and License
 =====================
 
-Copyright (c) 1989-2010 Brian M. Clapper
+Copyright (c) 1989-2012 Brian M. Clapper
 All rights reserved.
 
 This software is released under a BSD license, adapted from
@@ -184,11 +184,11 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.7'
+__version__   = '3.0.8'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
-__copyright__ = '1989-2011 Brian M. Clapper'
+__copyright__ = '1989-2012 Brian M. Clapper'
 __license__   = 'BSD-style license'
 
 # Package stuff
@@ -240,7 +240,7 @@ class Paragrepper(object):
 
     def grep(self):
         if not self.files:
-            found = self.__search(sys.stdin)
+            found = self._search(sys.stdin)
 
         else:
             self.__print_file_name = len(self.files) > 1
@@ -249,7 +249,7 @@ class Paragrepper(object):
                 try:
                     with open(file) as f:
                         self.__print_file_header = self.__print_file_name
-                        if self.__search(f, filename=file):
+                        if self._search(f, filename=file):
                             found = True
                 except IOError, (err, msg):
                     raise ParagrepError("Can't open file \"%s\": %s" %
@@ -262,7 +262,7 @@ class Paragrepper(object):
     # Private Methods
     # -----------------------------------------------------------------------
 
-    def __search(self, f, filename=None):
+    def _search(self, f, filename=None):
         paragraph = []
         last_empty = False
         found = False
@@ -276,7 +276,7 @@ class Paragrepper(object):
 
                 if not last_empty:
                     last_empty = True
-                    found = self.__search_paragraph(paragraph, filename)
+                    found = self._search_paragraph(paragraph, filename)
                     paragraph = []
 
             else:
@@ -290,12 +290,12 @@ class Paragrepper(object):
         # We might have a paragraph left in the buffer. If so, search it.
 
         if not last_empty:
-            if self.__search_paragraph(paragraph, filename):
+            if self._search_paragraph(paragraph, filename):
                 found = True
 
         return found
 
-    def __search_paragraph(self, paragraph, filename):
+    def _search_paragraph(self, paragraph, filename):
         found_count_must_be = 1
         if self.anding:
             # If ANDing, must match ALL the regular expressions.
@@ -307,29 +307,28 @@ class Paragrepper(object):
 
         total_found = 0
         for re in self.regexps:
-
             for line in paragraph:
                 if re.search(line):
                     total_found += 1
                     break
 
-            if ((total_found == found_count_must_be) and (not self.negate)) or \
-               ((total_found != found_count_must_be) and self.negate):
-                found = True
-                if self.__print_file_header:
-                    print '::::::::::\n%s\n::::::::::\n' % filename
-                    self.__print_file_header = False
-                print '\n'.join(paragraph) + '\n'
-            else:
-                found = False
+        if ((total_found == found_count_must_be) and (not self.negate)) or \
+           ((total_found != found_count_must_be) and self.negate):
+            found = True
+            if self.__print_file_header:
+                print '::::::::::\n%s\n::::::::::\n' % filename
+                self.__print_file_header = False
+            print '\n'.join(paragraph) + '\n'
+        else:
+            found = False
 
-            return found
+        return found
 
 # ---------------------------------------------------------------------------
 # Main Program
 # ---------------------------------------------------------------------------
 
-def __load_expr_files(files):
+def _load_expr_files(files):
     result = []
     for file in files:
         try:
@@ -341,7 +340,7 @@ def __load_expr_files(files):
 
     return result
 
-def __parse_params(paragrepper, argv):
+def _parse_params(paragrepper, argv):
     # Parse the command-line parameters
 
     prog = os.path.basename(argv[0])
@@ -390,7 +389,7 @@ def __parse_params(paragrepper, argv):
 
     if options.exprFiles != None:
         try:
-            uncompiled_regexps += __load_expr_files(options.exprFiles)
+            uncompiled_regexps += _load_expr_files(options.exprFiles)
         except IOError, (errno, msg):
             parser.error(msg)
 
@@ -434,7 +433,7 @@ def main():
 
     rc = 0
     p = Paragrepper()
-    __parse_params(p, sys.argv)
+    _parse_params(p, sys.argv)
     try:
         found = p.grep()
         if not found:
