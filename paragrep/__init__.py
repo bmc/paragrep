@@ -184,7 +184,7 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.0.8'
+__version__   = '3.1.0'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
@@ -234,6 +234,7 @@ class Paragrepper(object):
         self.case_blind = False
         self.negate = False
         self.show_version = False
+        self.print_eop = False
 
         self.__print_file_name = False
         self.__print_file_header = False
@@ -266,6 +267,17 @@ class Paragrepper(object):
         paragraph = []
         last_empty = False
         found = False
+        eop_line = None
+
+        def print_paragraph(paragraph):
+            if self.__print_file_header:
+                print '::::::::::\n%s\n::::::::::\n' % filename
+                self.__print_file_header = False
+            print '\n'.join(paragraph)
+            if self.print_eop and (eop_line is not None):
+                print eop_line
+            else:
+                print ""
 
         for line in f:
             if self.eop_regexp.match(line):
@@ -274,14 +286,20 @@ class Paragrepper(object):
                 # the end of the paragraph, search the accumulated lines of
                 # the paragraph.
 
+                if line[-1] == '\n':
+                    eop_line = line[:-1]
+                else:
+                    eop_line = line
+
                 if not last_empty:
                     last_empty = True
-                    found = self._search_paragraph(paragraph, filename)
+                    found = self._search_paragraph(paragraph)
+                    if found:
+                        print_paragraph(paragraph)
                     paragraph = []
 
             else:
                 # Save this line in the current paragraph buffer
-
                 if line[-1] == '\n':
                     line = line[:-1]
                 paragraph += [line]
@@ -290,20 +308,17 @@ class Paragrepper(object):
         # We might have a paragraph left in the buffer. If so, search it.
 
         if not last_empty:
-            if self._search_paragraph(paragraph, filename):
+            if self._search_paragraph(paragraph):
                 found = True
+                print_paragraph(paragraph)
 
         return found
 
-    def _search_paragraph(self, paragraph, filename):
+    def _search_paragraph(self, paragraph):
         found_count_must_be = 1
         if self.anding:
             # If ANDing, must match ALL the regular expressions.
             found_count_must_be = len(self.regexps)
-
-        paragraph_as_one_string = ' '.join(paragraph)
-        if self.case_blind:
-            paragraph_as_one_string = paragraph_as_one_string.lower()
 
         total_found = 0
         for re in self.regexps:
@@ -312,13 +327,10 @@ class Paragrepper(object):
                     total_found += 1
                     break
 
-        if ((total_found == found_count_must_be) and (not self.negate)) or \
-           ((total_found != found_count_must_be) and self.negate):
+        if (not self.negate) and (total_found >= found_count_must_be):
             found = True
-            if self.__print_file_header:
-                print '::::::::::\n%s\n::::::::::\n' % filename
-                self.__print_file_header = False
-            print '\n'.join(paragraph) + '\n'
+        elif self.negate and (total_found != found_count_must_be):
+            found = True
         else:
             found = False
 
@@ -370,6 +382,10 @@ def _parse_params(paragrepper, argv):
                       dest='eop_regexp', default=r'^\s*$', metavar='eop_regexp',
                       help=r'Specify an alternate regular expression ' \
                       'to match end-of-paragraph. Default: %default')
+    parser.add_option('-P', '--print-eop', action='store_true',
+                      dest='print_eop', default=False, metavar='print_eop',
+                      help=r'Print the line that marks the end of each. ' \
+                      'paragraph. Default: %default')
     parser.add_option('-v', '--negate', action='store_true', dest='negate',
                       help='Negate the sense of the match.')
 
@@ -380,6 +396,7 @@ def _parse_params(paragrepper, argv):
     paragrepper.anding = options.anding
     paragrepper.case_blind = options.caseblind
     paragrepper.negate = options.negate
+    paragrepper.print_eop = options.print_eop
 
     # Figure out where to get the regular expressions to find.
 
