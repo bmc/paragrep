@@ -384,7 +384,7 @@ def _parse_params(paragrepper, argv):
                       'to match end-of-paragraph. Default: %default')
     parser.add_option('-P', '--print-eop', action='store_true',
                       dest='print_eop', default=False, metavar='print_eop',
-                      help=r'Print the line that marks the end of each. ' \
+                      help=r'Print the line that marks the end of each ' \
                       'paragraph. Default: %default')
     parser.add_option('-v', '--negate', action='store_true', dest='negate',
                       help='Negate the sense of the match.')
