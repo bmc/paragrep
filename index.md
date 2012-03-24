@@ -17,6 +17,29 @@ or blank line; this behavior can be altered with the `-p` option.
 If no files are specified on the command line, *paragrep* searches standard
 input.
 
+## Installation
+
+The easiest way to install *paragrep* is via [pip][] or [EasyInstall][]. Use
+one of the following commands:
+
+    $ pip install paragrep
+    $ easy_install paragrep
+
+If you'd prefer to install from source, you can either:
+
+* Download and unpack the code from the [Downloads][] page
+* Use `git git://github.com/bmc/paragrep.git` to pull down the source
+  repository.
+
+Then, within the resulting `paragrep` directory, type:
+
+    $ python setup.py install
+
+[pip]: http://www.pip-installer.org/
+[EasyInstall]: http://pypi.python.org/pypi/setuptools
+[Downloads]: https://github.com/bmc/paragrep/downloads
+[GitHub repo]: https://github.com/bmc/paragrep/
+
 ## Usage
 
 > paragrep \[-aiotv\] \[-p *regexp*\] \[-e *regexp*\] ... \[-f *exprfile*\] ... \[*file*\] ...
@@ -86,6 +109,11 @@ to:
 which matches blank or empty lines. (`\t` represents the horizontal tab
 character. If you need to specify a horizontal tab, you'll need to type the
 actual character; *paragrep* doesn't recognize C-style metacharacters.)
+
+#### `-P`
+
+Displays the lines that mark the end of each paragraph, instead of separating
+matching paragraphs with a newline (which is the default).
 
 #### `-v`
 
