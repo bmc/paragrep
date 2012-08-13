@@ -28,7 +28,7 @@ one of the following commands:
 If you'd prefer to install from source, you can either:
 
 * Download and unpack the code from the [Downloads][] page
-* Use `git git://github.com/bmc/paragrep.git` to pull down the source
+* Use `git clone git://github.com/bmc/paragrep.git` to pull down the source
   repository.
 
 Then, within the resulting `paragrep` directory, type:
@@ -184,6 +184,10 @@ Copyright &copy; 1998-2011 Brian M. Clapper
 ## License
 
 [BSD license][].
+
+## Change log
+
+You can find the change log [here](https://github.com/bmc/paragrep/blob/master/CHANGELOG.md).
 
 ## Patches
 
