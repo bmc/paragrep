@@ -1,6 +1,10 @@
 Change log for paragrep
 ---------------------------------------------------------------------------
 
+Version 3.1.1 (13 August, 2012)
+
+- Fixed installation download URL, allowing installs from `pip` to work again.
+
 Version 3.1.0 (24 March, 2012)
 
 - Added ability to display the matching end-of-paragraph lines. Specify

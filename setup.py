@@ -43,6 +43,8 @@ DOWNLOAD_URL = 'https://github.com/bmc/paragrep/zipball/release-%s' % info['__ve
 
 # Now the setup stuff.
 
+print("%s, version %s" % (NAME, info['__version__']))
+
 setup (name             = NAME,
        download_url     = DOWNLOAD_URL,
        version          = info['__version__'],
