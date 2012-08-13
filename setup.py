@@ -39,8 +39,7 @@ def load_info():
 info = load_info()
 
 NAME = 'paragrep'
-DOWNLOAD_URL = ('http://pypi.python.org/packages/source/p/%s/%s-%s.tar.gz' %
-                (NAME, NAME, info['__version__']))
+DOWNLOAD_URL = 'https://github.com/bmc/paragrep/zipball/release-%s' % info['__version__']
 
 # Now the setup stuff.
 
