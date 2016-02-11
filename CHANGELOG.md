@@ -1,6 +1,11 @@
 Change log for paragrep
 ---------------------------------------------------------------------------
 
+Version 3.1.2 (11 February, 2016)
+
+- Updated dependency on `grizzled-python`, to pick up a version that's
+  more compatible with Python 3.
+
 Version 3.1.1 (13 August, 2012)
 
 - Fixed installation download URL, allowing installs from `pip` to work again.

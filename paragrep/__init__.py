@@ -184,7 +184,7 @@ from __future__ import with_statement
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.1.1'
+__version__   = '3.1.2'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
