@@ -146,7 +146,7 @@ See Also
 Copyright and License
 =====================
 
-Copyright (c) 1989-2012 Brian M. Clapper
+Copyright (c) 1989-2016 Brian M. Clapper
 All rights reserved.
 
 This software is released under a BSD license, adapted from
@@ -179,12 +179,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-from __future__ import with_statement
+from __future__ import print_function
 
 __docformat__ = 'restructuredtext'
 
 # Info about the module
-__version__   = '3.1.2'
+__version__   = '3.1.3'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
@@ -252,9 +252,9 @@ class Paragrepper(object):
                         self.__print_file_header = self.__print_file_name
                         if self._search(f, filename=file):
                             found = True
-                except IOError, (err, msg):
+                except IOError as e:
                     raise ParagrepError("Can't open file \"%s\": %s" %
-                                        (file, msg))
+                                        (file, e.message))
 
         return found
 
@@ -271,13 +271,13 @@ class Paragrepper(object):
 
         def print_paragraph(paragraph):
             if self.__print_file_header:
-                print '::::::::::\n%s\n::::::::::\n' % filename
+                print('::::::::::\n{0}\n::::::::::\n'.format(filename))
                 self.__print_file_header = False
-            print '\n'.join(paragraph)
+            print('\n'.join(paragraph))
             if self.print_eop and (eop_line is not None):
-                print eop_line
+                print(eop_line)
             else:
-                print ""
+                print("")
 
         for line in f:
             if self.eop_regexp.match(line):
@@ -407,14 +407,14 @@ def _parse_params(paragrepper, argv):
     if options.exprFiles != None:
         try:
             uncompiled_regexps += _load_expr_files(options.exprFiles)
-        except IOError, (errno, msg):
-            parser.error(msg)
+        except IOError as e:
+            parser.error(e.message)
 
     # Try to compile the end-of-paragraph regular expression.
 
     try:
         paragrepper.eop_regexp = re.compile(options.eop_regexp)
-    except Exception, msg:
+    except Exception as e:
         parser.error('Bad regular expression "%s" to -p option' % \
                      options.eop_regexp)
 
@@ -438,7 +438,7 @@ def _parse_params(paragrepper, argv):
             else:
                 re_args = (expr,)
             paragrepper.regexps += [re.compile(*re_args)]
-        except Exception, msg:
+        except Exception as e:
             parser.error('Bad regular expression: "%s"' % expr)
 
     # Are there any files, or are we searching standard input?
@@ -455,8 +455,8 @@ def main():
         found = p.grep()
         if not found:
             rc = 1
-    except ParagrepError, ex:
-        print >> sys.stderr, ex.message
+    except ParagrepError as ex:
+        print(ex.message, file=sys.stderr)
         rc = 1
 
     sys.exit(rc)
