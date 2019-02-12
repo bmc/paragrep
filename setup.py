@@ -1,62 +1,51 @@
 #!/usr/bin/env python
-#
-# EasyInstall setup script for paragrep
-#
-# $Id$
-# ---------------------------------------------------------------------------
 
 import sys
 import os
+
 sys.path += [os.getcwd()]
 
 from setuptools import setup, find_packages
-import re
-import imp
 
 DESCRIPTION = "Print paragraphs matching regular expressions"
 
-def load_info():
-    # Look for identifiers beginning with "__" at the beginning of the line.
+if sys.version_info[0:2] < (3, 6):
+    msg = ('As of version 3.2.0, the paragrep package no longer supports ' +
+           'Python 2. Either upgrade to Python 3.6 or better, or use an ' +
+           'older version of paragrep (e.g., 3.1.3).')
+    sys.stderr.write(msg + '\n')
+    raise Exception(msg)
 
-    result = {}
-    pattern = re.compile(r'^(__\w+__)\s*=\s*[\'"]([^\'"]*)[\'"]')
-    here = os.path.dirname(os.path.abspath(sys.argv[0]))
-    for line in open(os.path.join(here, 'paragrep', '__init__.py'), 'r'):
-        match = pattern.match(line)
-        if match:
-            result[match.group(1)] = match.group(2)
+def import_from_file(file, name):
+    # See https://stackoverflow.com/a/19011259/53495
+    import importlib.machinery
+    import importlib.util
+    loader = importlib.machinery.SourceFileLoader(name, file)
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    mod = importlib.util.module_from_spec(spec)
+    loader.exec_module(mod)
+    return mod
 
-    sys.path = [here] + sys.path
-    mf = os.path.join(here, 'paragrep', '__init__.py')
-    try:
-        m = imp.load_module('paragrep', open(mf), mf,
-                            ('__init__.py', 'r', imp.PY_SOURCE))
-        result['long_description'] = m.__doc__
-    except:
-        result['long_description'] = DESCRIPTION
-    return result
-
-info = load_info()
+here = os.getcwd()
+paragrep = import_from_file(os.path.join(here, 'paragrep', '__init__.py'),
+                            'paragrep')
 
 NAME = 'paragrep'
-DOWNLOAD_URL = 'https://github.com/bmc/paragrep/zipball/release-%s' % info['__version__']
 
 # Now the setup stuff.
 
-print("%s, version %s" % (NAME, info['__version__']))
-
 setup (name             = NAME,
-       download_url     = DOWNLOAD_URL,
-       version          = info['__version__'],
+       version          = paragrep.__version__,
        description      = DESCRIPTION,
-       long_description = info['long_description'],
+       long_description = paragrep.__doc__,
        packages         = find_packages(),
-       url              = info['__url__'],
-       license          = info['__license__'],
-       author           = info['__author__'],
-       author_email     = info['__email__'],
+       url              = paragrep.__url__,
+       license          = paragrep.__license__,
+       author           = paragrep.__author__,
+       author_email     = paragrep.__email__,
        entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
-       install_requires = ['grizzled-python>=1.0.7', ],
+       install_requires = [
+       ],
        data_files       = [('man', ['man/paragrep.1'])],
        classifiers = [
         'Intended Audience :: Developers',
@@ -65,5 +54,5 @@ setup (name             = NAME,
         'Programming Language :: Python',
         'Topic :: Text Processing :: Filters',
         'Topic :: Utilities',
-]
+       ]
 )

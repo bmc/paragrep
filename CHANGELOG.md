@@ -1,5 +1,13 @@
-Change log for paragrep
----------------------------------------------------------------------------
+# Change log for paragrep
+
+Version 3.2.0 (12 February, 2019)
+
+- Starting with this version, `paragrep` will _only_ work on Python 3.6 or
+  better.
+- Added type annotations.
+- Updated `print` statements to use f-strings.
+- Removed dependency on `grizzled-python` library. This package now requires
+  only the standard Python 3 library.
 
 Version 3.1.2 (11 February, 2016)
 

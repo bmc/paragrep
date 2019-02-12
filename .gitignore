@@ -4,3 +4,4 @@ dist
 *.egg-info
 *.iml
 /.idea
+/tmp
