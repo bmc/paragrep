@@ -19,25 +19,20 @@ input.
 
 ## Installation
 
-The easiest way to install *paragrep* is via [pip][] or [EasyInstall][]. Use
-one of the following commands:
+The easiest way to install *paragrep* is via [pip][]:
 
-    $ pip install paragrep
-    $ easy_install paragrep
+```
+$ pip install paragrep
+```
 
-If you'd prefer to install from source, you can either:
+**WARNING:** As of version 3.2.0, _paragrep_ no longer supports Python 2.
+If you need to run it under Python 2, use an older version. e.g.:
 
-* Download and unpack the code from the [Downloads][] page
-* Use `git clone git://github.com/bmc/paragrep.git` to pull down the source
-  repository.
-
-Then, within the resulting `paragrep` directory, type:
-
-    $ python setup.py install
+```
+$ pip install paragrep==3.1.3
+```
 
 [pip]: http://www.pip-installer.org/
-[EasyInstall]: http://pypi.python.org/pypi/setuptools
-[Downloads]: https://github.com/bmc/paragrep/downloads
 [GitHub repo]: https://github.com/bmc/paragrep/
 
 ## Usage
@@ -45,6 +40,8 @@ Then, within the resulting `paragrep` directory, type:
 > paragrep \[-aiotv\] \[-p *regexp*\] \[-e *regexp*\] ... \[-f *exprfile*\] ... \[*file*\] ...
 
 > paragrep \[-itv\] \[-p eop_regexp\] regexp \[file\] ...
+
+> paragrep -h | --help
 
 ### Options, in brief
 
@@ -82,6 +79,10 @@ expression per line. Each expression in the file is added to the set of
 expression against which paragraphs are to be matched. More than one `-f`
 argument is permitted. Also, `-f` and `-e` may be specified together.
 
+#### `-h` (or `--help`)
+
+Print full usage information and exit.
+
 #### `-i`
 
 Specifies case-blind pattern matching. The default is case-sensitive pattern
@@ -104,7 +105,9 @@ without actually being part of a paragraph (i.e., lines matching this
 expression are never printed). If this option is not specified, it defaults
 to:
 
-    ^[ \t]*$
+```
+^[ \t]*$
+```
 
 which matches blank or empty lines. (`\t` represents the horizontal tab
 character. If you need to specify a horizontal tab, you'll need to type the
@@ -121,50 +124,28 @@ Displays all lines that do not match specified expressions. The negation
 logic works on [De Morgan's laws][]. Normally, if `-a` is specified,
 *paragrep* uses the following logic to match the paragraph:
 
-    match = contains(expr1) AND contains(expr2) ...
+```
+match = contains(expr1) AND contains(expr2) ...
+```
 
 Specifying `-v` along with `-a` changes this logic to:
 
-    match = lacks(expr1) OR lacks(expr2) ...
+```
+match = lacks(expr1) OR lacks(expr2) ...
+```
 
 Likewise, without `-a` or `-v` (i.e., using `-o`, which is the default),
 the matching logic is:
 
-    match = contains(expr1) OR contains(expr2) ...
+```
+match = contains(expr1) OR contains(expr2) ...
+```
 
 Negating that logic with `-v` causes paragrep to match paragraphs with:
 
-    match = lacks(expr1) AND lacks(expr2) ...
-
-## Getting and installing *paragrep*
-
-### Installing via pip
-
-Because *paragrep* is available via [PyPI][], if you have [pip][]
-installed on your system, installing *paragrep* is as easy as running this
-command (usually as `root` or the system administrator):
-
-    pip install paragrep
-
-### Installing from source
-
-You can also install *paragrep* from source. Either download the source (as
-a zip or tarball) from <http://github.com/bmc/paragrep/downloads>, or make
-a local read-only clone of the [GitHub repository][] using one of the
-following commands:
-
-    $ git clone git://github.com/bmc/paragrep.git
-    $ git clone http://github.com/bmc/paragrep.git
-
-Once you have a local `paragrep` source directory, change your working directory
-to the source directory, and type:
-
-    python setup.py install
-
-To install it somewhere other than the default location (such as in your
-home directory) type:
-
-    python setup.py install --prefix=$HOME
+```
+match = lacks(expr1) AND lacks(expr2) ...
+```
 
 ## Trivia
 
@@ -172,14 +153,13 @@ This is the third implementation of *paragrep*. The first implementation, in
 1989, was in C. The second implementation, in 2003, was in [Perl][]. This is
 the latest and greatest.
 
-
 ## Author
 
 [Brian M. Clapper][]
 
 ## Copyright
 
-Copyright &copy; 1998-2011 Brian M. Clapper
+Copyright &copy; 1998-2019 Brian M. Clapper
 
 ## License
 
