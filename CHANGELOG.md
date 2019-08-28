@@ -1,5 +1,9 @@
 # Change log for paragrep
 
+Version 3.2.1 (28 August, 2019)
+
+- Added missing dependency on `Click` package.
+
 Version 3.2.0 (12 February, 2019)
 
 - Starting with this version, `paragrep` will _only_ work on Python 3.6 or

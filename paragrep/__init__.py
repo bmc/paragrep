@@ -25,7 +25,7 @@ This software is released under a BSD license.
 """
 
 # Info about the module
-__version__   = '3.2.0'
+__version__   = '3.2.1'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
