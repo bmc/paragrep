@@ -25,11 +25,11 @@ This software is released under a BSD license.
 """
 
 # Info about the module
-__version__   = '3.2.1'
+__version__   = '3.2.2'
 __author__    = 'Brian M. Clapper'
 __email__     = 'bmc@clapper.org'
 __url__       = 'http://software.clapper.org/paragrep/'
-__copyright__ = '1989-2012 Brian M. Clapper'
+__copyright__ = '1989-2023 Brian M. Clapper'
 __license__   = 'BSD-style license'
 
 # Package stuff
@@ -44,14 +44,13 @@ import sys
 import os
 import re
 from typing import Sequence, Optional, TextIO, NoReturn
-import click
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
 
-FULL_VERSION_STRING = 'paragrep, Version %s. Copyright %s' %\
-                    (__version__, __copyright__)
+FULL_VERSION_STRING = (f'paragrep, Version {__version__}. '
+                       f'Copyright {__copyright__}')
 
 # ---------------------------------------------------------------------------
 # Classes
@@ -60,7 +59,7 @@ FULL_VERSION_STRING = 'paragrep, Version %s. Copyright %s' %\
 class ParagrepError(Exception):
     pass
 
-class Paragrepper(object):
+class Paragrepper:
     """
     Grep through a file, printing paragraphs that match one or more regular
     expressions.
@@ -190,7 +189,7 @@ def _load_expr_files(files: Sequence[str]) -> Sequence[str]:
 
     return result
 
-def _parse_params(paragrepper: Paragrepper, argv: Sequence[str]) -> NoReturn:
+def _parse_params(paragrepper: Paragrepper, argv: Sequence[str]) -> None:
     # Parse the command-line parameters
 
     prog = os.path.basename(argv[0])
@@ -255,8 +254,7 @@ f'''
     try:
         paragrepper.eop_regexp = re.compile(options.eop_regexp)
     except Exception as e:
-        parser.error('Bad regular expression "%s" to -p option' % \
-                     options.eop_regexp)
+        parser.error(f'Bad regular expression "{options.eop_regexp}" to -p')
 
     args = args[1:]
     if len(uncompiled_regexps) == 0:
@@ -279,7 +277,7 @@ f'''
                 re_args = (expr,)
             paragrepper.regexps += [re.compile(*re_args)]
         except Exception as e:
-            parser.error('Bad regular expression: "%s"' % expr)
+            parser.error(f'Bad regular expression: "{expr}"')
 
     # Are there any files, or are we searching standard input?
 
