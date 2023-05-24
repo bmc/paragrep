@@ -44,9 +44,7 @@ setup (name             = NAME,
        author           = paragrep.__author__,
        author_email     = paragrep.__email__,
        entry_points     = {'console_scripts' : 'paragrep=paragrep:main'},
-       install_requires = [
-           "Click==7.0"
-       ],
+       install_requires = [],
        data_files       = [('man', ['man/paragrep.1'])],
        classifiers = [
         'Intended Audience :: Developers',
