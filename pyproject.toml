@@ -1,21 +1,93 @@
+# Project configuration for paragrep.
+#
+# The build process uses the Python "build" tool as the build front-end and
+# setuptools as the build back-end. See comments in [build-system], below.
+
+# -----------------------------------------------------------------------------
+# Project configuration
+# -----------------------------------------------------------------------------
+
+[project]
+name = "paragrep"
+# Version is resolved from the paragrep.__version__ constant. README is also
+# dynamically discovered. See [tools.setuptools.dynamic], below.
+dynamic = ["version", "readme"]
+dependencies = [
+]
+description = "Print paragraphs matching regular expressions"
+requires-python = ">= 3.10"
+authors = [
+  {name = "Brian Clapper", email = "bmc@clapper.org"}
+]
+maintainers = [
+  {name = "Brian Clapper", email = "bmc@clapper.org"}
+]
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 5 - Production/Stable",
+
+  "Intended Audience :: End Users/Desktop",
+  "Topic :: Text Processing :: Filters",
+  "License :: OSI Approved :: BSD License",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/bmc/paragrep"
+
+[project.scripts]
+paragrep = "paragrep:main"
+
+# -----------------------------------------------------------------------------
+# Build configuration
+# -----------------------------------------------------------------------------
+
+[build-system]
+# Use https://github.com/pypa/build
+# (python -m build)
+# See https://packaging.python.org/en/latest/glossary/#term-Build-Frontend
+# and https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = []
+
+[tool.setuptools.dynamic]
+version = {attr = "paragrep.__version__"}
+readme = {file = ["README.md"]}
+
+# -----------------------------------------------------------------------------
+# Tool-specific configurations
+# -----------------------------------------------------------------------------
+
 [tool.black]
 line-length = 79
 target-version = ['py311']
 extend-exclude = '''
-^/dist
-^/man
-^/*.egg-info
-^/tmp
-^/build
+^/venv
 '''
 
 [tool.isort]
 profile = "black"
+src_paths = ["paragrep/*.py"]
 
-[tool.pytest.ini_options]
-pythonpath = ["paragrep"]
+# No test package yet. (This is a command utility that relies on user-input.)
+# Testing it automatically is challenging.
+#[tool.pytest.ini_options]
+#pythonpath = ["."]
 
 [tool.pyright]
+# pyright is a type checker.
 #venvPath = "venv"
+exclude = ["./tasks.py", "bin"]
 include = ["paragrep/*.py"]
 

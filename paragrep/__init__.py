@@ -25,7 +25,7 @@ This software is released under a BSD license.
 """
 
 # Info about the module
-__version__ = "3.3.0"
+__version__ = "3.3.1"
 __author__ = "Brian M. Clapper"
 __email__ = "bmc@clapper.org"
 __url__ = "http://software.clapper.org/paragrep/"
@@ -45,9 +45,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
-from typing import Optional
-from typing import Sequence as Seq
-from typing import TextIO, Tuple
+from typing import Optional, Sequence as Seq, TextIO, Tuple
 
 # ---------------------------------------------------------------------------
 # Constants
