@@ -47,6 +47,11 @@ import sys
 from dataclasses import dataclass
 from typing import Optional, Sequence as Seq, TextIO, Tuple
 
+if sys.version_info < (3, 11):
+    from typing_extensions import Self
+else:
+    from typing import Self
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -84,11 +89,19 @@ class Paragrepper:
     expressions.
     """
 
-    def __post_init__(self):
+    def __post_init__(self: Self) -> None:
+        """
+        Executed by the dataclasses infrastructure after the object is
+        initialized, this method does some additional initialization.
+        """
         self._print_file_name = False
         self._print_file_header = False
 
-    def grep(self):
+    def grep(self: Self) -> bool:
+        """
+        The entry point for searching the files captured in this object,
+        using the regular expressions supplied on the constructor.
+        """
         if len(self.files) == 0:
             found = self._search(sys.stdin)
 
@@ -110,7 +123,13 @@ class Paragrepper:
     # Private Methods
     # -----------------------------------------------------------------------
 
-    def _search(self, f: TextIO, filename: Optional[str] = None) -> bool:
+    def _search(self: Self, f: TextIO, filename: Optional[str] = None) -> bool:
+        """
+        Workhorse method that searches an open file-like object for paragraphs
+        that match the regular expression patterns. Returns True if any
+        paragraphs are found that match the regular expressions, False. The
+        matching paragraphs were printed to stdout.
+        """
         paragraph = []
         last_empty = False
         found = False
@@ -161,7 +180,11 @@ class Paragrepper:
 
         return found
 
-    def _search_paragraph(self, paragraph: Seq[str]) -> bool:
+    def _search_paragraph(self: Self, paragraph: Seq[str]) -> bool:
+        """
+        Search one paragraph for the regular expressions. Returns True if
+        the paragraph matches and False otherwise.
+        """
         found_count_must_be = 1
         if self.anding:
             # If ANDing, must match ALL the regular expressions.
