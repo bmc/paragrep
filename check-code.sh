@@ -3,7 +3,10 @@
 # Run Python checkers and formatters.
 
 echo "Checking types ..."
-pyright || exit 1
+pyright paragrep || exit 1
+
+echo "Linting ..."
+ruff check paragrep
 
 echo "Sorting imports in $i"
 isort paragrep/*.py

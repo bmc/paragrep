@@ -25,7 +25,7 @@ This software is released under a BSD license.
 """
 
 # Info about the module
-__version__ = "3.3.1"
+__version__ = "3.3.2"
 __author__ = "Brian M. Clapper"
 __email__ = "bmc@clapper.org"
 __url__ = "http://software.clapper.org/paragrep/"
@@ -45,12 +45,11 @@ import os
 import re
 import sys
 from dataclasses import dataclass
-from typing import Optional, Sequence as Seq, TextIO, Tuple
+from typing import Self
+from typing import Sequence as Seq
+from typing import TextIO
 
-if sys.version_info < (3, 11):
-    from typing_extensions import Self
-else:
-    from typing import Self
+assert sys.version_info >= (3, 11), "Python 3.11 or later is required"
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -110,12 +109,14 @@ class Paragrepper:
             found = False
             for file in self.files:
                 try:
-                    with open(file, "r", encoding="utf-8") as f:
+                    with open(file, encoding="utf-8") as f:
                         self._print_file_header = self._print_file_name
                         if self._search(f, filename=file):
                             found = True
-                except IOError as e:
-                    raise ParagrepError(f"""Can't open file "{file}": {e}""")
+                except OSError as e:
+                    raise ParagrepError(
+                        f"""Can't open file "{file}": {e}"""
+                    ) from e
 
         return found
 
@@ -123,7 +124,7 @@ class Paragrepper:
     # Private Methods
     # -----------------------------------------------------------------------
 
-    def _search(self: Self, f: TextIO, filename: Optional[str] = None) -> bool:
+    def _search(self: Self, f: TextIO, filename: str | None = None) -> bool:
         """
         Workhorse method that searches an open file-like object for paragraphs
         that match the regular expression patterns. Returns True if any
@@ -152,10 +153,7 @@ class Paragrepper:
                 # the end of the paragraph, search the accumulated lines of
                 # the paragraph.
 
-                if line[-1] == "\n":
-                    eop_line = line[:-1]
-                else:
-                    eop_line = line
+                eop_line = line[:-1] if line[-1] == "\n" else line
 
                 if not last_empty:
                     last_empty = True
@@ -173,10 +171,9 @@ class Paragrepper:
 
         # We might have a paragraph left in the buffer. If so, search it.
 
-        if not last_empty:
-            if self._search_paragraph(paragraph):
-                found = True
-                print_paragraph(paragraph)
+        if not last_empty and self._search_paragraph(paragraph):
+            found = True
+            print_paragraph(paragraph)
 
         return found
 
@@ -191,12 +188,13 @@ class Paragrepper:
             found_count_must_be = len(self.regexps)
 
         total_found = 0
-        for re in self.regexps:
+        for pat in self.regexps:
             for line in paragraph:
-                if re.search(line):
+                if pat.search(line):
                     total_found += 1
                     break
 
+        # ruff: ignore[SIM114]
         if (not self.negate) and (total_found >= found_count_must_be):
             found = True
         elif self.negate and (total_found != found_count_must_be):
@@ -217,15 +215,15 @@ def _load_expr_files(files: Seq[str]) -> Seq[str]:
     for file in files:
         try:
             with open(file) as f:
-                for l in f.readlines():
-                    result += [l.strip()]
-        except IOError as e:
-            raise ParagrepError(f"""Can't open file "{file}": {e}""")
+                for line in f.readlines():
+                    result += [line.strip()]
+        except OSError as e:
+            raise ParagrepError(f"""Can't open file "{file}": {e}""") from e
 
     return result
 
 
-def _parse_params(argv: Seq[str]) -> Tuple[optparse.Values, Seq[str]]:
+def _parse_params(argv: list[str]) -> tuple[optparse.Values, list[str]]:
     """
     Parse the command line arguments
     """
@@ -328,10 +326,10 @@ def translate_args(options: optparse.Values, args: Seq[str]) -> Paragrepper:
 
         local_args: list[str] = list(args)
         uncompiled_regexps = []
-        if options.regexps != None:
+        if options.regexps is not None:
             uncompiled_regexps += options.regexps
 
-        if options.exprFiles != None:
+        if options.exprFiles is not None:
             uncompiled_regexps += _load_expr_files(options.exprFiles)
 
         # Try to compile the end-of-paragraph regular expression.
@@ -371,12 +369,12 @@ def translate_args(options: optparse.Values, args: Seq[str]) -> Paragrepper:
             negate=options.negate,
             print_eop=options.print_eop,
         )
-    except IOError as e:
-        raise CommandLineError(str(e))
+    except OSError as e:
+        raise CommandLineError(str(e)) from e
     except re.error as e:
         raise CommandLineError(
             f'Error in regular expression "{e.pattern}": {e}'
-        )
+        ) from e
 
 
 def main() -> int:
