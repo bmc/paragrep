@@ -53,6 +53,8 @@ do
   esac
 done
 
+pip install build
+
 # Run targets
 for t in $targets
 do
